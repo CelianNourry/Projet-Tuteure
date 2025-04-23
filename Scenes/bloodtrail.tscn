@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsc0dbeu865uh"]
+
+[ext_resource type="Texture2D" uid="uid://b4yqgiwl7al4n" path="res://sprites/particles/bloodtrail.png" id="1"]
+
+[sub_resource type="ParticleProcessMaterial" id="1"]
+emission_shape = 1
+emission_sphere_radius = 3.0
+gravity = Vector3(0, 0, 0)
+color = Color(0.34902, 0.0313726, 0.0313726, 1)
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+amount = 1
+process_material = SubResource("1")
+texture = ExtResource("1")
+lifetime = 100.0

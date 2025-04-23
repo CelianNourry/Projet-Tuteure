@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0kqjdkjmxm6i"]
+
+[ext_resource type="Texture2D" uid="uid://bgogb3g68clbn" path="res://sprites/hud/progressbar.png" id="1_fehds"]
+[ext_resource type="Script" uid="uid://1u3f5jggpsyx" path="res://Scripts/Stamina_bar.gd" id="2_4h2h7"]
+
+[node name="Stamina_bar" type="TextureProgressBar"]
+clip_contents = true
+offset_right = 64.0
+offset_bottom = 12.0
+value = 100.0
+texture_under = ExtResource("1_fehds")
+texture_progress = ExtResource("1_fehds")
+tint_under = Color(0.054902, 0.0509804, 0.0509804, 1)
+tint_progress = Color(0, 0.658824, 0.0862745, 1)
+script = ExtResource("2_4h2h7")

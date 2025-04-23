@@ -1,0 +1,130 @@
+extends CharacterBody2D
+
+@onready var inventoryControl = $InventoryUI/Inventory
+@onready var inventoryUI = $InventoryUI
+
+@onready var interact_ui = $InteractUI
+@onready var camera = $PlayerCamera
+
+@export var SPEED = 125
+@export var WALK_SPEED = 125
+@export var SPRINT_SPEED = 250
+@export var TIRED_SPEED = 50
+@export var STAMINA = 100
+
+var WALK_LOSS = 0.025
+var SPRINT_LOSS = 0.2
+var IDLE_STAM_GAIN = 0.1
+
+var isSprinting = false
+var isMoving = false
+
+# Inventaire propre au joueur
+var inventory = []
+signal inventory_updated
+
+var interactable_item = null
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(int(str(name)))
+
+func _ready():
+	inventory.resize(6)
+	if is_multiplayer_authority():
+		camera.enabled = true
+		inventoryControl.set_player(self)
+	else:
+		camera.enabled = false
+
+func _physics_process(delta):
+	if !is_multiplayer_authority():
+		return
+		
+	velocity = Vector2()
+
+	if Input.is_action_just_pressed("ui_shift") and STAMINA > 0:
+		SPEED = SPRINT_SPEED
+		isSprinting = true
+	if Input.is_action_just_released("ui_shift") or STAMINA <= 0:
+		SPEED = WALK_SPEED
+		isSprinting = false
+
+	if Input.is_action_pressed("ui_w") or Input.is_action_pressed("ui_up"):
+		velocity.y -= 1
+		$AnimatedSprite2D.animation = "walkup"
+		isMoving = true
+	elif Input.is_action_pressed("ui_s") or Input.is_action_pressed("ui_down"):
+		velocity.y += 1
+		$AnimatedSprite2D.animation = "walkdown"
+		isMoving = true
+	elif Input.is_action_pressed("ui_d") or Input.is_action_pressed("ui_right"):
+		velocity.x += 1
+		$AnimatedSprite2D.animation = "walkright"
+		isMoving = true
+	elif Input.is_action_pressed("ui_a") or Input.is_action_pressed("ui_left"):
+		velocity.x -= 1
+		$AnimatedSprite2D.animation = "walkleft"
+		isMoving = true
+	else:
+		$AnimatedSprite2D.animation = "idle"
+		isMoving = false
+		if STAMINA <= 100:
+			STAMINA += IDLE_STAM_GAIN
+
+	if isMoving:
+		STAMINA -= WALK_LOSS
+		if isSprinting:
+			STAMINA -= SPRINT_LOSS
+		if STAMINA <= 0:
+			STAMINA += WALK_LOSS
+			SPEED = TIRED_SPEED
+
+	velocity = velocity.normalized() * SPEED
+	set_velocity(velocity)
+	move_and_slide()
+
+func set_interactable_item(item):
+	interactable_item = item
+	interact_ui.visible = item != null
+		
+func _input(event):
+	if event.is_action_pressed("ui_inventory"):
+		print("Le joueur ", self, " a interagit avec l'inventaire")
+		inventoryUI.visible = !inventoryUI.visible
+	elif event.is_action_pressed("ui_add") and interactable_item:
+		print("Demande de ramassage envoyée au serveur pour : ", interactable_item.name)
+		interactable_item.pickup_item(self)
+
+func apply_item_effect(item):
+	if !is_multiplayer_authority():
+		return
+	match item["effect"]:
+		"Vitesse":
+			SPEED += 200
+			print("Vitesse augmentée de ", SPEED)
+		_ :
+			print("Aucun effet pour cet objet.")
+
+# Ajout d'un item dans l'inventaire
+func add_item(item):
+	for i in range(inventory.size()):
+		if inventory[i] != null and inventory[i]["name"] == item["name"] and inventory[i]["effect"] == item["effect"]:
+			inventory[i]["quantity"] += item["quantity"]
+			inventory_updated.emit()
+			return true
+		elif inventory[i] == null:
+			inventory[i] = item
+			inventory_updated.emit()
+			return true
+	return false
+
+# Suppression d'un item dans l'inventaire
+func remove_item(item_name, item_effect):
+	for i in range(inventory.size()):
+		if inventory[i] != null and inventory[i]["name"] == item_name and inventory[i]["effect"] == item_effect:
+			inventory[i]["quantity"] -= 1
+			if inventory[i]["quantity"] <= 0:
+				inventory[i] = null
+			inventory_updated.emit()
+			return true
+	return false

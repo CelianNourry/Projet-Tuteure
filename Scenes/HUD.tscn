@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcw8jd8w0yrsa"]
+
+[ext_resource type="PackedScene" uid="uid://c0kqjdkjmxm6i" path="res://Scenes/Stamina_bar.tscn" id="1_wkwlf"]
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Stamina_bar" parent="." instance=ExtResource("1_wkwlf")]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 79.0
+offset_right = 149.0
+offset_bottom = 91.0
