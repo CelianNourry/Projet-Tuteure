@@ -1,12 +1,10 @@
 res://Scripts/default_env.tres
+res://Scenes/esprit.tscn
+res://Scripts/game.gd
+res://Scripts/Chara_Movement.gd
 res://Scenes/Node2D.tscn
 res://Scenes/Chara_Movement.tscn
 res://Scenes/inventory_item.tscn
 res://Scenes/inventory_slot.tscn
 res://Scenes/inventory_ui.tscn
-res://Scenes/esprit.tscn
-res://Scenes/esprit.gd
-res://Scenes/game.gd
-res://Scenes/player.tscn
-res://Scripts/game.gd
 res://Scripts/esprit.gd

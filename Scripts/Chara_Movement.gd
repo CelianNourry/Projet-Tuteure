@@ -28,7 +28,7 @@ var interactable_item = null
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(name)))
 
-func _ready():
+func _ready() -> void:
 	inventory.resize(6)
 	if is_multiplayer_authority():
 		camera.enabled = true
@@ -36,11 +36,10 @@ func _ready():
 	else:
 		camera.enabled = false
 		
-@rpc("any_peer", "call_local")
 func set_animation(anim_name: String) -> void:
 	$AnimatedSprite2D.animation = anim_name
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority():
 		return
 	
@@ -78,7 +77,7 @@ func _physics_process(delta):
 			STAMINA += IDLE_STAM_GAIN
 			
 	# Mettre à jour l'animation pour tous les joueurs
-	set_animation.rpc(anim)
+	set_animation(anim)
 
 	if isMoving:
 		STAMINA -= WALK_LOSS
@@ -92,11 +91,11 @@ func _physics_process(delta):
 	set_velocity(velocity)
 	move_and_slide()
 
-func set_interactable_item(item):
+func set_interactable_item(item) -> void:
 	interactable_item = item
 	interact_ui.visible = item != null
 		
-func _input(event):
+func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_inventory"):
 		print("Le joueur ", self, " a interagit avec l'inventaire")
 		inventoryUI.visible = !inventoryUI.visible
@@ -115,7 +114,7 @@ func apply_item_effect(item):
 			print("Aucun effet pour cet objet.")
 
 # Ajout d'un item dans l'inventaire
-func add_item(item):
+func add_item(item) -> bool:
 	for i in range(inventory.size()):
 		if inventory[i] != null and inventory[i]["name"] == item["name"] and inventory[i]["effect"] == item["effect"]:
 			inventory[i]["quantity"] += item["quantity"]
@@ -128,7 +127,7 @@ func add_item(item):
 	return false
 
 # Suppression d'un item dans l'inventaire
-func remove_item(item_name, item_effect):
+func remove_item(item_name: String, item_effect: String) -> bool:
 	for i in range(inventory.size()):
 		if inventory[i] != null and inventory[i]["name"] == item_name and inventory[i]["effect"] == item_effect:
 			inventory[i]["quantity"] -= 1

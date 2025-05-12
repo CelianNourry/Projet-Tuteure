@@ -15,20 +15,25 @@ var IDLE_STAM_GAIN = 0.1
 var isSprinting = false
 var isMoving = false
 
+var interactable_item = null
+
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(name)))
 
-func _ready():
+func _ready() -> void:
 	if is_multiplayer_authority():
 		camera.enabled = true
 	else:
 		camera.enabled = false
 		
+func set_animation(anim_name: String) -> void:
+	pass
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority():
-		return
-
+		pass
+	
+	var anim = "idle"
 		
 	velocity = Vector2()
 
@@ -41,20 +46,28 @@ func _physics_process(delta):
 
 	if Input.is_action_pressed("ui_w") or Input.is_action_pressed("ui_up"):
 		velocity.y -= 1
+		anim = "walkup"
 		isMoving = true
 	elif Input.is_action_pressed("ui_s") or Input.is_action_pressed("ui_down"):
 		velocity.y += 1
+		anim = "walkdown"
 		isMoving = true
 	elif Input.is_action_pressed("ui_d") or Input.is_action_pressed("ui_right"):
 		velocity.x += 1
+		anim = "walkright"
 		isMoving = true
 	elif Input.is_action_pressed("ui_a") or Input.is_action_pressed("ui_left"):
 		velocity.x -= 1
+		anim = "walkleft"
 		isMoving = true
 	else:
+		anim = "idle"
 		isMoving = false
 		if STAMINA <= 100:
 			STAMINA += IDLE_STAM_GAIN
+			
+	# Mettre à jour l'animation pour tous les joueurs
+	set_animation(anim)
 
 	if isMoving:
 		STAMINA -= WALK_LOSS
@@ -68,4 +81,6 @@ func _physics_process(delta):
 	set_velocity(velocity)
 	move_and_slide()
 
+func set_interactable_item(item) -> void:
+	pass
 		
