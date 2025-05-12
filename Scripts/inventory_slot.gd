@@ -10,6 +10,7 @@ extends Control
 
 #Slot item
 var item = null
+var PLAYER = null
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -52,8 +53,8 @@ func _on_use_button_pressed():
 
 func _on_drop_button_pressed():
 	if item != null:
-		var drop_position = Global.player_node.global_position
-		var drop_offset = Vector2(0, 50).rotated(Global.player_node.rotation)
-		Global.drop_item(item, drop_position + drop_offset)
-		Global.player_node.remove_item(item["name"], item["effect"])
+		var drop_position = PLAYER.position
+		var drop_offset = Vector2(0, 50).rotated(PLAYER.rotation)
+		Global.drop_item.rpc(item, drop_position + drop_offset)
+		PLAYER.remove_item(item["name"], item["effect"])
 		usage_pannel.visible = false

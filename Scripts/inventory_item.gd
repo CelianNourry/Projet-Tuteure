@@ -18,6 +18,7 @@ func _ready():
 	if not Engine.is_editor_hint():
 		icon_sprite.texture = item_texture
 		
+@rpc("authority", "call_local")
 func pickup_item(body):
 	var item = {
 		"quantity" : 1,
@@ -26,11 +27,13 @@ func pickup_item(body):
 		"effect" : item_effect,
 		"scene_path" : scene_path,
 	}
-	print("test1")
 	if body is CharacterBody2D and body.is_multiplayer_authority():
-		print("test2")
 		if body.add_item(item):
-			queue_free()
+			disappear.rpc()
+
+@rpc("any_peer", "call_local")
+func disappear():
+	queue_free()
 
 func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D and body.is_multiplayer_authority():

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://4c8n4vngagx7"]
+
+[ext_resource type="Script" uid="uid://cjbnfppdeosjy" path="res://Scripts/esprit.gd" id="1_hr7gg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_woqft"]
+
+[node name="esprit" type="CharacterBody2D"]
+script = ExtResource("1_hr7gg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_woqft")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)

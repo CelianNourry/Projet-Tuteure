@@ -18,6 +18,7 @@ func adjust_drop_position(position):
 				break
 	return position
 	
+@rpc("any_peer", "call_local")
 func drop_item(item_data, drop_position):
 	var item_scene = load(item_data["scene_path"])
 	var item_instance = item_scene.instantiate()

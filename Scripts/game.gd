@@ -5,6 +5,8 @@ extends Node2D
 var players := {}
 
 const PLAYER = preload("res://Scenes/Chara_Movement.tscn")
+const ESPRIT = preload("res://Scenes/esprit.tscn")
+
 var peer =  ENetMultiplayerPeer.new()
 
 func _on_host_pressed() -> void:
@@ -26,8 +28,21 @@ func _on_join_pressed() -> void:
 	multiplayer_ui.hide()
 
 func add_player(pid):
-	var player = PLAYER.instantiate()
-	player.name = str(pid)
-	player.set_multiplayer_authority(pid)
-	player.add_to_group("players")
-	add_child(player)
+	if players.size() == 0:
+		var player = PLAYER.instantiate()
+		player.name = str(pid)
+		player.set_multiplayer_authority(pid)
+		player.add_to_group("players")
+		add_child(player)
+		players[pid] = player
+	else:
+		var esprit = ESPRIT.instantiate()
+		esprit.name = str(pid)
+		esprit.set_multiplayer_authority(pid)
+		# Important : set l'autorité AVANT add_child !
+		add_child(esprit)
+		esprit.add_to_group("players")
+		"""
+		var corps = players.values()[0]
+		esprit.corps = corps"""
+		players[pid] = esprit

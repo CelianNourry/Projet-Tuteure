@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://250u0fm1wgof"]
 
-[ext_resource type="Script" uid="uid://vy7eto66xif5" path="res://Scenes/game.gd" id="1_fb6d7"]
+[ext_resource type="Script" uid="uid://vy7eto66xif5" path="res://Scripts/game.gd" id="1_fb6d7"]
 [ext_resource type="Texture2D" uid="uid://b1rmvgad2tduk" path="res://sprites/grass00.png" id="1_vk7xo"]
 [ext_resource type="PackedScene" uid="uid://crxxlxugpwlen" path="res://Scenes/inventory_item.tscn" id="3_msvkj"]
 [ext_resource type="Texture2D" uid="uid://b5e3a24s7dpdd" path="res://sprites/items/medkit.png" id="4_4iusc"]

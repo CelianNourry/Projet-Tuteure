@@ -35,10 +35,16 @@ func _ready():
 		inventoryControl.set_player(self)
 	else:
 		camera.enabled = false
+		
+@rpc("any_peer", "call_local")
+func set_animation(anim_name: String) -> void:
+	$AnimatedSprite2D.animation = anim_name
 
 func _physics_process(delta):
 	if !is_multiplayer_authority():
 		return
+	
+	var anim = "idle"
 		
 	velocity = Vector2()
 
@@ -51,25 +57,28 @@ func _physics_process(delta):
 
 	if Input.is_action_pressed("ui_w") or Input.is_action_pressed("ui_up"):
 		velocity.y -= 1
-		$AnimatedSprite2D.animation = "walkup"
+		anim = "walkup"
 		isMoving = true
 	elif Input.is_action_pressed("ui_s") or Input.is_action_pressed("ui_down"):
 		velocity.y += 1
-		$AnimatedSprite2D.animation = "walkdown"
+		anim = "walkdown"
 		isMoving = true
 	elif Input.is_action_pressed("ui_d") or Input.is_action_pressed("ui_right"):
 		velocity.x += 1
-		$AnimatedSprite2D.animation = "walkright"
+		anim = "walkright"
 		isMoving = true
 	elif Input.is_action_pressed("ui_a") or Input.is_action_pressed("ui_left"):
 		velocity.x -= 1
-		$AnimatedSprite2D.animation = "walkleft"
+		anim = "walkleft"
 		isMoving = true
 	else:
-		$AnimatedSprite2D.animation = "idle"
+		anim = "idle"
 		isMoving = false
 		if STAMINA <= 100:
 			STAMINA += IDLE_STAM_GAIN
+			
+	# Mettre à jour l'animation pour tous les joueurs
+	set_animation.rpc(anim)
 
 	if isMoving:
 		STAMINA -= WALK_LOSS
