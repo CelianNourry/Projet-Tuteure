@@ -2,8 +2,13 @@ extends Node
 
 @onready var Inventory_slot_scene = preload("res://Scenes/inventory_slot.tscn")
 
-func _ready():
-	pass
+func get_own_player_node() -> Node:
+	for node in get_tree().get_nodes_in_group("players"):
+		if node.get_multiplayer_authority() == multiplayer.get_unique_id():
+			print(multiplayer.get_unique_id())
+			return node
+	print("non")
+	return null
 	
 func adjust_drop_position(position):
 	var radius = 10
@@ -26,4 +31,3 @@ func drop_item(item_data, drop_position):
 	drop_position = adjust_drop_position(drop_position)
 	item_instance.global_position = drop_position
 	get_tree().current_scene.add_child(item_instance)
-	

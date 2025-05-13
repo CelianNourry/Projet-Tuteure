@@ -1,6 +1,93 @@
-[gd_scene load_steps=4 format=3 uid="uid://4c8n4vngagx7"]
+[gd_scene load_steps=4 format=3 uid="uid://cl6d68t871e61"]
 
-[ext_resource type="Script" uid="uid://cjbnfppdeosjy" path="res://Scripts/esprit.gd" id="1_hr7gg"]
+[sub_resource type="GDScript" id="GDScript_woqft"]
+script/source = "extends CharacterBody2D
+
+@onready var camera = $Camera2D
+
+@export var SPEED = 125
+@export var WALK_SPEED = 125
+@export var SPRINT_SPEED = 250
+@export var TIRED_SPEED = 50
+@export var STAMINA = 100
+
+var WALK_LOSS = 0.025
+var SPRINT_LOSS = 0.2
+var IDLE_STAM_GAIN = 0.1
+
+var isSprinting = false
+var isMoving = false
+
+var interactable_item = null
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(int(str(name)))
+
+func _ready() -> void:
+	if is_multiplayer_authority():
+		camera.enabled = true
+	else:
+		camera.enabled = false
+		
+func set_animation(anim_name: String) -> void:
+	pass
+
+func _physics_process(delta: float) -> void:
+	if !is_multiplayer_authority():
+		pass
+	
+	var anim = \"idle\"
+		
+	velocity = Vector2()
+
+	if Input.is_action_just_pressed(\"ui_shift\") and STAMINA > 0:
+		SPEED = SPRINT_SPEED
+		isSprinting = true
+	if Input.is_action_just_released(\"ui_shift\") or STAMINA <= 0:
+		SPEED = WALK_SPEED
+		isSprinting = false
+
+	if Input.is_action_pressed(\"ui_w\") or Input.is_action_pressed(\"ui_up\"):
+		velocity.y -= 1
+		anim = \"walkup\"
+		isMoving = true
+	elif Input.is_action_pressed(\"ui_s\") or Input.is_action_pressed(\"ui_down\"):
+		velocity.y += 1
+		anim = \"walkdown\"
+		isMoving = true
+	elif Input.is_action_pressed(\"ui_d\") or Input.is_action_pressed(\"ui_right\"):
+		velocity.x += 1
+		anim = \"walkright\"
+		isMoving = true
+	elif Input.is_action_pressed(\"ui_a\") or Input.is_action_pressed(\"ui_left\"):
+		velocity.x -= 1
+		anim = \"walkleft\"
+		isMoving = true
+	else:
+		anim = \"idle\"
+		isMoving = false
+		if STAMINA <= 100:
+			STAMINA += IDLE_STAM_GAIN
+			
+	# Mettre à jour l'animation pour tous les joueurs
+	set_animation(anim)
+
+	if isMoving:
+		STAMINA -= WALK_LOSS
+		if isSprinting:
+			STAMINA -= SPRINT_LOSS
+		if STAMINA <= 0:
+			STAMINA += WALK_LOSS
+			SPEED = TIRED_SPEED
+
+	velocity = velocity.normalized() * SPEED
+	set_velocity(velocity)
+	move_and_slide()
+
+func set_interactable_item(item) -> void:
+	pass
+		
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_woqft"]
 
@@ -10,7 +97,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="esprit" type="CharacterBody2D"]
-script = ExtResource("1_hr7gg")
+script = SubResource("GDScript_woqft")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_woqft")

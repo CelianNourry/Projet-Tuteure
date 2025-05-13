@@ -24,6 +24,7 @@ func pickup_item(body):
 		"quantity" : 1,
 		"name" : item_name,
 		"texture" : item_texture,
+		"texture_path" : item_texture.resource_path,
 		"effect" : item_effect,
 		"scene_path" : scene_path,
 	}
@@ -49,7 +50,12 @@ func _on_area_2d_body_exited(body):
 func set_item_data(data):
 	item_name = data["name"]
 	item_effect = data["effect"]
-	item_texture = data["texture"]
+	if data.has("texture_path"):
+		item_texture = load(data["texture_path"])
+	elif data.has("texture") and typeof(data["texture"]) == TYPE_STRING:
+		item_texture = load(data["texture"])
+	elif data.has("texture"):
+		item_texture = data["texture"]
 		
 func _process(delta):
 	#Set texture to reflect in the editor

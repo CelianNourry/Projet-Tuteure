@@ -2,10 +2,7 @@ extends Node2D
 
 @onready var multiplayer_ui = $UI/Multiplayer
 
-var players: int = 0
-
 const PLAYER = preload("res://Scenes/Chara_Movement.tscn")
-const ESPRIT = preload("res://Scenes/esprit.tscn")
 
 var peer = ENetMultiplayerPeer.new()
 
@@ -15,8 +12,8 @@ func _on_host_pressed() -> void:
 	
 	multiplayer.peer_connected.connect(
 		func(pid):
-			print("Peer " + str(pid) + " as joined the game")
 			add_player(pid)
+			print("Peer " + str(pid) + " as joined the game")
 	)
 	# PID of the host
 	add_player(multiplayer.get_unique_id())
@@ -28,7 +25,9 @@ func _on_join_pressed() -> void:
 	multiplayer_ui.hide()
 
 func add_player(pid: int) -> void:
-	if players == 0:
-		var player = PLAYER.instantiate()
-		player.name = str(pid)
-		add_child(player)
+	var player = PLAYER.instantiate()
+	player.name = str(pid)
+	add_child(player)
+	if pid == multiplayer.get_unique_id():
+		player.add_to_group("players")
+		

@@ -10,11 +10,6 @@ extends Control
 
 #Slot item
 var item = null
-var PLAYER = null
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func _on_item_button_pressed():
 	if item != null:
@@ -34,7 +29,10 @@ func set_empty():
 
 func set_item(new_item):
 	item = new_item
-	icon.texture = new_item["texture"]
+	if typeof(new_item["texture"]) == TYPE_STRING:
+		icon.texture = load(new_item["texture"])
+	else:
+		icon.texture = new_item["texture"]
 	quantity_label.text = str(item["quantity"])
 	item_name.text = str(item["name"])
 	if item["effect"] != "":
@@ -53,8 +51,9 @@ func _on_use_button_pressed():
 
 func _on_drop_button_pressed():
 	if item != null:
-		var drop_position = PLAYER.position
-		var drop_offset = Vector2(0, 50).rotated(PLAYER.rotation)
+		var player = Global.get_own_player_node()
+		var drop_position = player.global_position
+		var drop_offset = Vector2(0, 50).rotated(player.rotation)
 		Global.drop_item.rpc(item, drop_position + drop_offset)
-		PLAYER.remove_item(item["name"], item["effect"])
+		player.remove_item(item["name"], item["effect"])
 		usage_pannel.visible = false

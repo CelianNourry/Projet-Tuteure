@@ -114,5 +114,11 @@ text = "Join"
 _spawnable_scenes = PackedStringArray("uid://c2enchvmfcua7")
 spawn_path = NodePath("..")
 
+[node name="Inventory_Item2" parent="." instance=ExtResource("3_msvkj")]
+position = Vector2(77, 6)
+item_name = "Kit de Soin"
+item_texture = ExtResource("4_4iusc")
+item_effect = "+100 HP"
+
 [connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Join" to="." method="_on_join_pressed"]
