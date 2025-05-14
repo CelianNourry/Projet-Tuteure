@@ -1,6 +1,11 @@
 res://Scripts/default_env.tres
+res://Scenes/Stamina_bar.tscn
+res://Scripts/Stamina_bar.gd
 res://Scenes/Node2D.tscn
 res://Scenes/Chara_Movement.tscn
 res://Scenes/inventory_item.tscn
 res://Scenes/inventory_slot.tscn
 res://Scenes/inventory_ui.tscn
+res://Scripts/Global.gd
+res://Scripts/Chara_Movement.gd
+res://Scripts/game.gd

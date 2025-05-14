@@ -6,49 +6,47 @@ extends CharacterBody2D
 @onready var interact_ui = $InteractUI
 @onready var camera = $PlayerCamera
 
-@export var SPEED = 125
-@export var WALK_SPEED = 125
-@export var SPRINT_SPEED = 250
-@export var TIRED_SPEED = 50
-@export var STAMINA = 100
+@export var SPEED: int = 125
+@export var WALK_SPEED: int = 125
+@export var SPRINT_SPEED: int = 250
+@export var TIRED_SPEED: int = 50
+@export var STAMINA: float = 100.00
 
-var WALK_LOSS = 0.025
-var SPRINT_LOSS = 0.2
-var IDLE_STAM_GAIN = 0.1
+var WALK_LOSS: float = 0.025
+var SPRINT_LOSS: float = 0.20
+var IDLE_STAM_GAIN: float = 0.10
 
-var isSprinting = false
-var isMoving = false
+var isSprinting: bool = false
+var isMoving: bool = false
 
 # Inventaire propre au joueur
 var inventory = []
 signal inventory_updated
 
-var interactable_item = null
-
-var anim = null
+var interactable_item: Node2D
 
 # Determine le type de joueur. L'hote est le joueur, le pair est l'esprit
 var HOST: int
 
 func _enter_tree() -> void:
+	HOST = 1 if multiplayer.get_unique_id() == 1 else 0
 	set_multiplayer_authority(int(str(name)))
 
 func _ready() -> void:
-	HOST = 1 if multiplayer.get_unique_id() == 1 else 0
-	inventory.resize(6)
+	print(HOST)
+	$CollisionShape2D.disabled = !HOST # On désactive les collisions pour l'esprit
+	inventory.resize(12)
 	if is_multiplayer_authority():
 		camera.enabled = true
 		inventoryControl.set_player(self)
 	else:
 		camera.enabled = false
-		
-func set_animation(anim_name: String) -> void:
-	$AnimatedSprite2D.animation = anim_name
+	# Rendre l'hote visible tandis que l'esprit ne l'est pas (provisoire)
 	$AnimatedSprite2D.visible = HOST
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if is_multiplayer_authority():
-		anim = "idle"
+		$AnimatedSprite2D.animation = "idle"
 			
 		velocity = Vector2()
 
@@ -61,28 +59,25 @@ func _physics_process(delta: float) -> void:
 
 		if Input.is_action_pressed("ui_w") or Input.is_action_pressed("ui_up"):
 			velocity.y -= 1
-			anim = "walkup"
+			$AnimatedSprite2D.animation = "walkup"
 			isMoving = true
 		elif Input.is_action_pressed("ui_s") or Input.is_action_pressed("ui_down"):
 			velocity.y += 1
-			anim = "walkdown"
+			$AnimatedSprite2D.animation = "walkdown"
 			isMoving = true
 		elif Input.is_action_pressed("ui_d") or Input.is_action_pressed("ui_right"):
 			velocity.x += 1
-			anim = "walkright"
+			$AnimatedSprite2D.animation = "walkright"
 			isMoving = true
 		elif Input.is_action_pressed("ui_a") or Input.is_action_pressed("ui_left"):
 			velocity.x -= 1
-			anim = "walkleft"
+			$AnimatedSprite2D.animation = "walkleft"
 			isMoving = true
 		else:
-			anim = "idle"
+			$AnimatedSprite2D.animation = "idle"
 			isMoving = false
 			if STAMINA <= 100:
 				STAMINA += IDLE_STAM_GAIN
-				
-		# Mettre à jour l'animation pour tous les joueurs
-		set_animation(anim)
 
 		if isMoving:
 			STAMINA -= WALK_LOSS
@@ -96,7 +91,7 @@ func _physics_process(delta: float) -> void:
 		set_velocity(velocity)
 		move_and_slide()
 
-func set_interactable_item(item) -> void:
+func set_interactable_item(item: Node2D) -> void:
 	interactable_item = item
 	interact_ui.visible = item != null
 		
@@ -109,7 +104,7 @@ func _input(event: InputEvent) -> void:
 			print("Demande de ramassage envoyée au serveur pour : ", interactable_item.name)
 			interactable_item.pickup_item(self)
 
-func apply_item_effect(item):
+func apply_item_effect(item: Dictionary) -> void:
 	if !is_multiplayer_authority():
 		return
 	match item["effect"]:
@@ -120,7 +115,7 @@ func apply_item_effect(item):
 			print("Aucun effet pour cet objet.")
 
 # Ajout d'un item dans l'inventaire
-func add_item(item) -> bool:
+func add_item(item: Dictionary) -> bool:
 	for i in range(inventory.size()):
 		if inventory[i] != null and inventory[i]["name"] == item["name"] and inventory[i]["effect"] == item["effect"]:
 			inventory[i]["quantity"] += item["quantity"]

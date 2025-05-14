@@ -30,4 +30,3 @@ func add_player(pid: int) -> void:
 	add_child(player)
 	if pid == multiplayer.get_unique_id():
 		player.add_to_group("players")
-		

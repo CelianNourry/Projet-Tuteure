@@ -1,40 +1,38 @@
 extends TextureProgressBar
 
-var BLACK = Color(0.05, 0.05, 0.05, 1)
-var RED_COLOR = Color(0.6, 0.13, 0.13)
-var GREEN_COLOR = Color(0, 0.66, 0.09)
-var GREEN_YELLOW = Color(0.678431, 1, 0.184314, 1)
-var YELLOW = Color(1, 1, 0, 1)
-var DARK_ORANGE = Color(1, 0.54902, 0, 1)
+# Noeud du parent, qui est censé etre le joueur
+@onready var player: Node2D = get_parent()
 
-@onready var player = get_node("../../Player")
-var blink_timer = 0.0
-var blink_interval = 1.0
+@onready var blinkTimer: float
+const blinkInterval: float = 1.0
+const lowStamina: float = 15.00
 
-func _physics_process(delta):
-	if !is_multiplayer_authority():
-		return
+func _ready():
+	# Cache la barre si ce joueur n'est pas sous notre contrôle
+	if player.HOST and player.is_multiplayer_authority():
+		self.visible = true
 		
-	$"./".value = player.STAMINA
-	
-	if player.STAMINA > 80:
-		self.tint_progress = GREEN_COLOR
-		blink_timer = 0.0
-	elif player.STAMINA > 60:
-		self.tint_progress = GREEN_YELLOW
-		blink_timer = 0.0
-	elif player.STAMINA > 35:
-		self.tint_progress = YELLOW
-		blink_timer = 0.0
-	elif player.STAMINA > 25:
-		self.tint_progress = DARK_ORANGE
-		blink_timer = 0.0
+func change_bar_color(stamina: float, delta: float) -> void:
+	if stamina > 15:
+		# Normalise la stamina entre 0 et 1
+		var t = clamp(stamina / 100.0, 0.0, 1.0)
+
+		# Interpolation entre vert et rouge
+		self.tint_progress = Color.RED.lerp(Color.GREEN, t)
+		
 	else:
-		blink_timer += delta
-		if blink_timer < blink_interval / 2:
-			self.tint_progress = RED_COLOR
+		# Clignotement si très faible stamina
+		blinkTimer += delta
+		if blinkTimer < blinkInterval / 2:
+			self.tint_progress = Color.DARK_RED
 		else:
-			self.tint_progress = BLACK
-		
-		if blink_timer > blink_interval:
-			blink_timer = 0.0
+			self.tint_progress = Color.BLACK
+
+		if blinkTimer > blinkInterval:
+			blinkTimer = 0.0
+			
+func _physics_process(delta: float) -> void:
+	if is_multiplayer_authority():
+		# Change la progression de la barre selon la stamina du joueur
+		self.value = player.STAMINA
+		change_bar_color(self.value, delta)
