@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://btedin2k01plm"]
+
+[ext_resource type="Script" uid="uid://m0ps5w767dyf" path="res://Scenes/door.gd" id="1_p0e35"]
+[ext_resource type="Texture2D" uid="uid://ci5wo3n1p1p73" path="res://sprites/characters/Sprite-0003.png" id="1_w6aom"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p0e35"]
+size = Vector2(20, 61)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fahql"]
+size = Vector2(4, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ab4ky"]
+size = Vector2(4, 50)
+
+[node name="Door" type="StaticBody2D"]
+script = ExtResource("1_p0e35")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 20.5)
+shape = SubResource("RectangleShape2D_p0e35")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2.02656e-06, 20.5)
+scale = Vector2(0.65625, 1.92187)
+texture = ExtResource("1_w6aom")
+
+[node name="Back" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Back"]
+position = Vector2(11, 21)
+shape = SubResource("RectangleShape2D_fahql")
+
+[node name="Area2D" type="Area2D" parent="Back"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Back/Area2D"]
+position = Vector2(-9, 20)
+shape = SubResource("RectangleShape2D_ab4ky")
+
+[node name="Front" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Front"]
+position = Vector2(-11, 21)
+shape = SubResource("RectangleShape2D_fahql")
+
+[connection signal="body_entered" from="Back" to="." method="_on_back_body_entered"]
+[connection signal="body_exited" from="Back" to="." method="_on_back_body_exited"]
+[connection signal="body_entered" from="Front" to="." method="_on_front_body_entered"]
+[connection signal="body_exited" from="Front" to="." method="_on_front_body_exited"]

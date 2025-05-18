@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://250u0fm1wgof"]
+[gd_scene load_steps=10 format=3 uid="uid://250u0fm1wgof"]
 
 [ext_resource type="Script" uid="uid://vy7eto66xif5" path="res://Scripts/game.gd" id="1_fb6d7"]
 [ext_resource type="Texture2D" uid="uid://b1rmvgad2tduk" path="res://sprites/grass00.png" id="1_vk7xo"]
 [ext_resource type="PackedScene" uid="uid://crxxlxugpwlen" path="res://Scenes/inventory_item.tscn" id="3_msvkj"]
 [ext_resource type="Texture2D" uid="uid://b5e3a24s7dpdd" path="res://sprites/items/medkit.png" id="4_4iusc"]
+[ext_resource type="PackedScene" uid="uid://btedin2k01plm" path="res://Scenes/door.tscn" id="5_1uyk5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mi8pq"]
 texture = ExtResource("1_vk7xo")
@@ -127,6 +128,9 @@ item_effect = "+100 HP"
 visible = false
 position = Vector2(135, 57)
 shape = SubResource("RectangleShape2D_b4ktf")
+
+[node name="Door" parent="." instance=ExtResource("5_1uyk5")]
+position = Vector2(279, 31)
 
 [connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Join" to="." method="_on_join_pressed"]

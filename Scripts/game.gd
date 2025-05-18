@@ -4,6 +4,8 @@ extends Node2D
 
 const PLAYER = preload("res://Scenes/Chara_Movement.tscn")
 
+var players : Dictionary = {}
+
 var peer = ENetMultiplayerPeer.new()
 
 func _on_host_pressed() -> void:
@@ -28,5 +30,11 @@ func add_player(pid: int) -> void:
 	var player = PLAYER.instantiate()
 	player.name = str(pid)
 	add_child(player)
+	await get_tree().create_timer(0.1).timeout
+
+	players[pid] = player
+		
 	if pid == multiplayer.get_unique_id():
 		player.add_to_group("players")
+	else:
+		player.add_to_group("esprits")

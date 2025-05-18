@@ -2,9 +2,10 @@ extends CharacterBody2D
 
 @onready var inventoryControl = $InventoryUI/Inventory
 @onready var inventoryUI = $InventoryUI
-
-@onready var interact_ui = $InteractUI
+@onready var interactUI = $InteractUI
+@onready var staminaBar = $Stamina_bar
 @onready var camera = $PlayerCamera
+@onready var bleeding = $bleeding
 
 @export var SPEED: int = 125
 @export var WALK_SPEED: int = 125
@@ -19,11 +20,15 @@ var IDLE_STAM_GAIN: float = 0.10
 var isSprinting: bool = false
 var isMoving: bool = false
 
+var isBleeding: bool
+
 # Inventaire propre au joueur
 var inventory = []
 signal inventory_updated
 
 var interactable_item: Node2D
+var interactable_front_door: Door
+var interactable_back_door: Door
 
 # Determine le type de joueur. L'hote est le joueur, le pair est l'esprit
 var HOST: int
@@ -33,22 +38,27 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(name)))
 
 func _ready() -> void:
-	print(HOST)
 	$CollisionShape2D.disabled = !HOST # On désactive les collisions pour l'esprit
 	inventory.resize(12)
+	
 	if is_multiplayer_authority():
 		camera.enabled = true
+		staminaBar.visible = true
+		$AnimatedSprite2D.visible = HOST
 		inventoryControl.set_player(self)
 	else:
 		camera.enabled = false
 	# Rendre l'hote visible tandis que l'esprit ne l'est pas (provisoire)
-	$AnimatedSprite2D.visible = HOST
+	
 
 func _physics_process(_delta: float) -> void:
 	if is_multiplayer_authority():
 		$AnimatedSprite2D.animation = "idle"
 			
 		velocity = Vector2()
+		
+		if isBleeding:
+			$bleeding.emitting = true
 
 		if Input.is_action_just_pressed("ui_shift") and STAMINA > 0:
 			SPEED = SPRINT_SPEED
@@ -84,8 +94,8 @@ func _physics_process(_delta: float) -> void:
 			if isSprinting:
 				STAMINA -= SPRINT_LOSS
 			if STAMINA <= 0:
-				STAMINA += WALK_LOSS
 				SPEED = TIRED_SPEED
+				isSprinting = false
 
 		velocity = velocity.normalized() * SPEED
 		set_velocity(velocity)
@@ -93,7 +103,15 @@ func _physics_process(_delta: float) -> void:
 
 func set_interactable_item(item: Node2D) -> void:
 	interactable_item = item
-	interact_ui.visible = item != null
+	interactUI.visible = item != null
+
+func set_interactable_front_door(door: Door) -> void:
+	interactable_front_door = door
+	interactUI.visible = door != null
+	
+func set_interactable_back_door(door: Door) -> void:
+	interactable_back_door = door
+	interactUI.visible = door != null
 		
 func _input(event: InputEvent) -> void:
 	if is_multiplayer_authority():
@@ -101,9 +119,20 @@ func _input(event: InputEvent) -> void:
 			print("Le joueur ", self, " a interagit avec l'inventaire")
 			inventoryUI.visible = !inventoryUI.visible
 		elif event.is_action_pressed("ui_add") and interactable_item and HOST:
-			print("Demande de ramassage envoyée au serveur pour : ", interactable_item.name)
+			print("Prise de l'item : ", interactable_item.name)
 			interactable_item.pickup_item(self)
-
+		elif interactable_front_door:
+			if event.is_action_pressed("interact"):
+				interactable_front_door.interact_with_front_door()
+				interactable_front_door = null
+		elif interactable_back_door:
+			if event.is_action_pressed("interact"):
+				interactable_back_door.interact_with_back_door("interact")
+				interactable_back_door = null
+			elif event.is_action_pressed("lock"):
+				interactable_back_door.interact_with_back_door("lock")
+				interactable_back_door = null
+			
 func apply_item_effect(item: Dictionary) -> void:
 	if !is_multiplayer_authority():
 		return
@@ -111,6 +140,9 @@ func apply_item_effect(item: Dictionary) -> void:
 		"Vitesse":
 			SPEED += 200
 			print("Vitesse augmentée de ", SPEED)
+		"+100 HP":
+			print("Blessures soignées.")
+			bleeding.emitting = false
 		_ :
 			print("Aucun effet pour cet objet.")
 
