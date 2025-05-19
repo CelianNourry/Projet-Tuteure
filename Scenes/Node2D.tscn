@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://250u0fm1wgof"]
+[gd_scene load_steps=11 format=3 uid="uid://250u0fm1wgof"]
 
 [ext_resource type="Script" uid="uid://vy7eto66xif5" path="res://Scripts/game.gd" id="1_fb6d7"]
 [ext_resource type="Texture2D" uid="uid://b1rmvgad2tduk" path="res://sprites/grass00.png" id="1_vk7xo"]
@@ -64,6 +64,8 @@ sources/1 = SubResource("TileSetAtlasSource_wtgcv")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b4ktf"]
 size = Vector2(20, 158)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1uyk5"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_fb6d7")
@@ -131,6 +133,9 @@ shape = SubResource("RectangleShape2D_b4ktf")
 
 [node name="Door" parent="." instance=ExtResource("5_1uyk5")]
 position = Vector2(279, 31)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_1uyk5")
 
 [connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Join" to="." method="_on_join_pressed"]

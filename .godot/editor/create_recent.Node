@@ -1,7 +1,7 @@
+MultiplayerSynchronizer
 StaticBody2D
 CollisionShape2D
 Area2D
 Sprite2D
-MultiplayerSynchronizer
 Camera2D
 CharacterBody2D

@@ -6,6 +6,7 @@ res://Scenes/inventory_item.tscn
 res://Scenes/inventory_slot.tscn
 res://Scenes/inventory_ui.tscn
 res://Scenes/Stamina_bar.tscn
-res://Scripts/game.gd
 res://Scenes/door.tscn
 res://Scenes/door.gd
+res://Scripts/game.gd
+res://Scripts/inventory_slot.gd

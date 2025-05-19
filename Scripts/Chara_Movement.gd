@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody2D
 
 @onready var inventoryControl = $InventoryUI/Inventory
@@ -31,7 +32,7 @@ var interactable_front_door: Door
 var interactable_back_door: Door
 
 # Determine le type de joueur. L'hote est le joueur, le pair est l'esprit
-var HOST: int
+@export var HOST: int
 
 func _enter_tree() -> void:
 	HOST = 1 if multiplayer.get_unique_id() == 1 else 0
@@ -48,8 +49,6 @@ func _ready() -> void:
 		inventoryControl.set_player(self)
 	else:
 		camera.enabled = false
-	# Rendre l'hote visible tandis que l'esprit ne l'est pas (provisoire)
-	
 
 func _physics_process(_delta: float) -> void:
 	if is_multiplayer_authority():
@@ -124,14 +123,11 @@ func _input(event: InputEvent) -> void:
 		elif interactable_front_door:
 			if event.is_action_pressed("interact"):
 				interactable_front_door.interact_with_front_door()
-				interactable_front_door = null
 		elif interactable_back_door:
 			if event.is_action_pressed("interact"):
 				interactable_back_door.interact_with_back_door("interact")
-				interactable_back_door = null
 			elif event.is_action_pressed("lock"):
 				interactable_back_door.interact_with_back_door("lock")
-				interactable_back_door = null
 			
 func apply_item_effect(item: Dictionary) -> void:
 	if !is_multiplayer_authority():
