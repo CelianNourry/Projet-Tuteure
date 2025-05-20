@@ -108,6 +108,9 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath(".:INFO")
 properties/5/spawn = true
 properties/5/replication_mode = 1
+properties/6/path = NodePath(".:INTERACTABLES")
+properties/6/spawn = true
+properties/6/replication_mode = 0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_in0ad")

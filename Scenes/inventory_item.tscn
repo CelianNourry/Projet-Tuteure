@@ -1,14 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://crxxlxugpwlen"]
+[gd_scene load_steps=4 format=3 uid="uid://crxxlxugpwlen"]
 
 [ext_resource type="Script" uid="uid://esi0y8qe11qt" path="res://Scripts/inventory_item.gd" id="1_yv81n"]
+[ext_resource type="Texture2D" uid="uid://b5e3a24s7dpdd" path="res://sprites/items/medkit.png" id="2_gj4io"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nv763"]
 radius = 14.0
 
 [node name="Inventory_Item" type="Node2D" groups=["Items"]]
 script = ExtResource("1_yv81n")
-item_name = null
-item_effect = null
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -17,6 +16,7 @@ shape = SubResource("CircleShape2D_nv763")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_gj4io")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

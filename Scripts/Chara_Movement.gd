@@ -13,7 +13,7 @@ extends CharacterBody2D
 	bleeding = $bleeding
 }
 
-# Informations actuelles du joueur
+# Informations actuelles du joueur. Elles ne sont pas synchronisées entre les joueurs dans le MultiplayerSynchronizer
 @export var INFO: Dictionary[StringName, Variant] = {
 	# Inventaire
 	inventory = [],
@@ -24,11 +24,6 @@ extends CharacterBody2D
 	isSprinting = false,
 	isBleeding = false,
 	
-	# Détection d'objet avec interaction
-	interactableIttem = null,
-	interactableFrontDoor = null,
-	interactableBackDoor = null,
-	
 	# Statistiques
 	currentSpeed = 125.00,
 	stamina = 100.00,
@@ -38,9 +33,17 @@ extends CharacterBody2D
 	walkStaminaLoss = 1.00,
 	sprintStaminaLoss = 5.00,
 	idleStaminaGain = 2.00,
+	maxSpiritRange = 300.00, # Rayon maximum auquel le pair peut se déplacer autour de l'hote
 	
 	# Position à la frame précédente
 	previousPosition = null
+}
+
+# Objets dont le joueur peut intéragir avec. Ils ne sont pas synchronisés entre les joueurs dans le MultiplayerSynchronizer
+@export var INTERACTABLES: Dictionary[StringName, Node] = {
+	item = null,
+	frontDoor = null,
+	backDoor = null,
 }
 
 signal inventory_updated
@@ -49,13 +52,13 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(self.name)))
 
 func _ready() -> void:
-	if not is_multiplayer_authority(): return
-	
-	INFO.isHosting = true if multiplayer.get_unique_id() == 1 else false # Le premier joueur est l'hote
 	add_to_group("players") # Ajout du noeud dans le groupe de joueurs
+	INFO.isHosting = true if multiplayer.get_unique_id() == 1 else false # Le premier joueur est l'hote
 	NODES.collisionShape.disabled = !INFO.isHosting # On désactive les collisions pour l'esprit
 	INFO.previousPosition = self.global_position
 	INFO.inventory.resize(12)
+	
+	if not is_multiplayer_authority(): return
 	
 	NODES.camera.enabled = true
 	NODES.staminaBar.visible = true
@@ -116,7 +119,11 @@ func _physics_process(delta: float) -> void:
 	update_anuimated_sprite(anim)
 	INFO.previousPosition = self.global_position
 
-	velocity = inputVector.normalized() * INFO.currentSpeed
+	# Le pair doit rester dans un rayon atour de l'hote
+	if !INFO.isHosting:
+		velocity = Global.enforce_distance_from_host(inputVector, self.global_position, INFO.maxSpiritRange, delta)
+	else:
+		velocity = inputVector.normalized() * INFO.currentSpeed
 	set_velocity(velocity)
 	move_and_slide()
 
@@ -125,15 +132,15 @@ func update_anuimated_sprite(anim: String) -> void:
 	NODES.animatedSprite.animation = anim
 
 func set_interactable_item(item: Node2D) -> void:
-	INFO.interactableIttem = item
+	INTERACTABLES.item = item
 	NODES.interactUI.visible = item != null
 
 func set_interactable_front_door(door: Door) -> void:
-	INFO.interactableFrontDoor = door
+	INTERACTABLES.frontDoor = door
 	NODES.interactUI.visible = door != null
 	
 func set_interactable_back_door(door: Door) -> void:
-	INFO.interactableBackDoor = door
+	INTERACTABLES.backDoor = door
 	NODES.interactUI.visible = door != null
 		
 func _input(event: InputEvent) -> void:
@@ -142,17 +149,17 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_inventory") and INFO.isHosting:
 		print("Le joueur ", self, " a interagit avec l'inventaire")
 		NODES.inventoryUI.visible = !NODES.inventoryUI.visible
-	elif event.is_action_pressed("ui_add") and INFO.interactableIttem and INFO.isHosting:
-		print("Prise de l'item : ", INFO.interactableIttem.name)
-		INFO.interactableIttem.pickup_item(self)
-	elif INFO.interactableFrontDoor:
+	elif event.is_action_pressed("ui_add") and INTERACTABLES.item and INFO.isHosting:
+		print("Prise de l'item : ", INTERACTABLES.item.name)
+		INTERACTABLES.item.pickup_item(self)
+	elif INTERACTABLES.frontDoor:
 		if event.is_action_pressed("interact"):
-			INFO.interactableFrontDoor.interact_with_front_door()
-	elif INFO.interactableBackDoor:
+			INTERACTABLES.frontDoor.interact_with_front_door()
+	elif INTERACTABLES.backDoor:
 		if event.is_action_pressed("interact"):
-			INFO.interactableBackDoor.interact_with_back_door("interact")
+			INTERACTABLES.backDoor.interact_with_back_door("interact")
 		elif event.is_action_pressed("lock"):
-			INFO.interactableBackDoor.interact_with_back_door("lock")
+			INTERACTABLES.backDoor.interact_with_back_door("lock")
 			
 func apply_item_effect(item: Dictionary) -> void:
 	if not is_multiplayer_authority(): return
@@ -190,9 +197,3 @@ func remove_item(item_name: String, item_effect: String) -> bool:
 			inventory_updated.emit()
 			return true
 	return false
-
-func get_host_coordinates() -> Vector2:
-	for node in get_tree().get_nodes_in_group("players"):
-		if node.INFO.isHosting:
-			return node.global_position
-	return Vector2.ZERO

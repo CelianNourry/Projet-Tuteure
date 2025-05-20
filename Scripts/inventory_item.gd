@@ -7,7 +7,7 @@ extends Node2D
 @export var item_effect: String
 const scene_path: String = "res://Scenes/inventory_item.tscn"
 
-@onready var icon_sprite: Sprite2D = $Sprite2D
+@onready var sprite: Sprite2D = $Sprite2D
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(name)))
@@ -15,7 +15,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	# Set texture to reflect in the game
 	if not Engine.is_editor_hint():
-		icon_sprite.texture = item_texture
+		sprite.texture = item_texture
 		
 @rpc("authority", "call_local")
 func pickup_item(body: Node2D) -> void:
@@ -59,4 +59,4 @@ func set_item_data(data: Dictionary) -> void:
 func _process(_delta: float) -> void:
 	#Set texture to reflect in the editor
 	if Engine.is_editor_hint():
-		icon_sprite.texture = item_texture
+		sprite.texture = item_texture
