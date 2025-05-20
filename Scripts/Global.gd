@@ -1,13 +1,11 @@
 extends Node
 
-@onready var Inventory_slot_scene = preload("res://Scenes/inventory_slot.tscn")
-
+@onready var PATHES: Dictionary[StringName, PackedScene] = {inventorySlot = preload("res://Scenes/inventory_slot.tscn")}
+	
 func get_own_player_node() -> Node:
 	for node in get_tree().get_nodes_in_group("players"):
 		if node.get_multiplayer_authority() == multiplayer.get_unique_id():
-			print(multiplayer.get_unique_id())
 			return node
-	print("non")
 	return null
 	
 func adjust_drop_position(position: Vector2) -> Vector2:

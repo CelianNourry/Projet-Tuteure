@@ -120,12 +120,6 @@ text = "Join"
 _spawnable_scenes = PackedStringArray("uid://c2enchvmfcua7")
 spawn_path = NodePath("..")
 
-[node name="Inventory_Item2" parent="." instance=ExtResource("3_msvkj")]
-position = Vector2(77, 6)
-item_name = "Kit de Soin"
-item_texture = ExtResource("4_4iusc")
-item_effect = "+100 HP"
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(135, 57)

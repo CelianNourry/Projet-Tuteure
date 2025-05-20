@@ -7,6 +7,8 @@ radius = 14.0
 
 [node name="Inventory_Item" type="Node2D" groups=["Items"]]
 script = ExtResource("1_yv81n")
+item_name = null
+item_effect = null
 
 [node name="Area2D" type="Area2D" parent="."]
 

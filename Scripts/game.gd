@@ -1,32 +1,28 @@
 extends Node2D
 
-@onready var multiplayerUI: Control = $UI/Multiplayer
-
-var PLAYER = preload("res://Scenes/Chara_Movement.tscn")
-
-var peer = ENetMultiplayerPeer.new()
+@onready var NODES: Dictionary[StringName, Node] = {multiplayerUI = $UI/Multiplayer}
+@onready var MULTIPLAYER: Dictionary[StringName, MultiplayerPeer] = {peer = ENetMultiplayerPeer.new()}
+const PATHES: Dictionary[StringName, PackedScene] = {player = preload("res://Scenes/Chara_Movement.tscn")}
 
 func _on_host_pressed() -> void:
-	peer.create_server(4242)
-	multiplayer.multiplayer_peer = peer
+	MULTIPLAYER.peer.create_server(4242)
+	multiplayer.multiplayer_peer = MULTIPLAYER.peer
 	
 	multiplayer.peer_connected.connect(
 		func(pid):
 			add_player(pid)
-			print("Peer " + str(pid) + " as joined the game")
+			print("Pair " + str(pid) + " a rejoint la partie !")
 	)
 	# PID of the host
 	add_player(multiplayer.get_unique_id())
-	multiplayerUI.hide()
+	NODES.multiplayerUI.hide()
 
 func _on_join_pressed() -> void:
-	peer.create_client("localhost", 4242)
-	multiplayer.multiplayer_peer = peer
-	multiplayerUI.hide()
+	MULTIPLAYER.peer.create_client("localhost", 4242)
+	multiplayer.multiplayer_peer = MULTIPLAYER.peer
+	NODES.multiplayerUI.hide()
 
 func add_player(pid: int) -> void:
-	var player = PLAYER.instantiate()
+	var player: Player = PATHES.player.instantiate()
 	player.name = str(pid)
 	add_child(player)
-	
-	player.add_to_group("players")

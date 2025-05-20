@@ -8,7 +8,7 @@ extends Control
 @onready var itemEffect: Label = $DetailPanel/ItemEffect
 @onready var usagePannel: ColorRect = $UsagePannel
 
-var item: Dictionary = {}
+@onready var item: Dictionary = {}
 
 func _on_item_button_pressed() -> void:
 	if item != {}:

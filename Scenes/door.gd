@@ -1,23 +1,30 @@
 class_name Door
 extends StaticBody2D
 
-@onready var collisionShape: CollisionShape2D = $CollisionShape2D
-@export var locked: bool
+# Noeuds de la porte
+@onready var NODES: Dictionary[StringName, Node] = {
+	collisionShape = $CollisionShape2D
+}
+
+# Informations de la porte
+@export var INFO: Dictionary[StringName, bool] = {
+	locked = true,
+	seenByHost = false
+}
 
 func interact_with_front_door() -> void:
-	if locked:
+	if INFO.locked:
 		print("La porte est verrouilée !")
 	else:
-		collisionShape.disabled = !collisionShape.disabled
-	return
+		NODES.collisionShape.disabled = !NODES.collisionShape.disabled
 	
 func interact_with_back_door(action: String) -> void:
 	match action:
 		"interact":
 			interact_with_front_door()
 		"lock":
-			locked = !locked
-			print("Porte %s" % ("verrouillée" if locked else "déverrouillée"))
+			INFO.locked = !INFO.locked
+			print("Porte %s" % ("verrouillée" if INFO.locked else "déverrouillée"))
 
 func _on_front_body_entered(body: Node2D) -> void:
 	if body is Player:
