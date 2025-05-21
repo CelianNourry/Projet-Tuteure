@@ -116,7 +116,7 @@ func _physics_process(delta: float) -> void:
 			INFO.currentSpeed = INFO.tiredSpeed
 			INFO.isSprinting = false
 
-	update_anuimated_sprite(anim)
+	update_animated_sprite(anim)
 	INFO.previousPosition = self.global_position
 
 	# Le pair doit rester dans un rayon atour de l'hote
@@ -127,8 +127,7 @@ func _physics_process(delta: float) -> void:
 	set_velocity(velocity)
 	move_and_slide()
 
-
-func update_anuimated_sprite(anim: String) -> void:
+func update_animated_sprite(anim: String) -> void:
 	NODES.animatedSprite.animation = anim
 
 func set_interactable_item(item: Node2D) -> void:
@@ -170,7 +169,8 @@ func apply_item_effect(item: Dictionary) -> void:
 			print("Vitesse augmentée de ", INFO.currentSpeed)
 		"+100 HP":
 			print("Blessures soignées.")
-			INFO.isBleeding = false
+			NODES.bleeding.emitting = false
+			INFO.idleStaminaGain = 2.00
 		_ :
 			print("Aucun effet pour cet objet.")
 

@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://cunlolotbvo74"]
+
+[ext_resource type="Script" uid="uid://bieiy0kvd3q5k" path="res://enemy.gd" id="1_4gyqm"]
+[ext_resource type="Texture2D" uid="uid://bmmu3bkulbhor" path="res://sprites/characters/Sprite-0002.png" id="1_7k104"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
+size = Vector2(32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
+radius = 830.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qi2p4"]
+radius = 28.0713
+
+[node name="Enemy" type="CharacterBody2D"]
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_4gyqm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4gyqm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_7k104")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="FOV" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FOV"]
+visible = false
+shape = SubResource("CircleShape2D_4gyqm")
+
+[node name="Hit Radius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hit Radius"]
+shape = SubResource("CircleShape2D_qi2p4")
+
+[connection signal="body_entered" from="FOV" to="." method="_on_FOV_body_entered"]
+[connection signal="body_exited" from="FOV" to="." method="_on_FOV_body_exited"]
+[connection signal="body_entered" from="Hit Radius" to="." method="_on_hit_radius_body_entered"]

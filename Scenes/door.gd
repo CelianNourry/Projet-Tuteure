@@ -27,21 +27,21 @@ func interact_with_back_door(action: String) -> void:
 			print("Porte %s" % ("verrouillée" if INFO.locked else "déverrouillée"))
 
 func _on_front_body_entered(body: Node2D) -> void:
-	if body is Player:
+	if body is Player and body.is_multiplayer_authority():
 		print("Joueur %s entré dans la face d'une porte" % [body.name])
 		body.set_interactable_front_door(self)
 
 func _on_front_body_exited(body: Node2D) -> void:
-	if body is Player:
+	if body is Player and body.is_multiplayer_authority():
 		print("Joueur %s sortit de la face d'une porte" % [body.name])
 		body.set_interactable_front_door(null)
 
 func _on_back_body_entered(body: Node2D) -> void:
-	if body is Player:
+	if body is Player and body.is_multiplayer_authority():
 		print("Joueur %s entré dans l'arrière d'une porte" % [body.name])
 		body.set_interactable_back_door(self)
 
 func _on_back_body_exited(body: Node2D) -> void:
-	if body is Player:
+	if body is Player and body.is_multiplayer_authority():
 		print("Joueur %s sortit de l'arrière d'une porte" % [body.name])
 		body.set_interactable_back_door(null)

@@ -36,12 +36,12 @@ func disappear() -> void:
 	queue_free()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D and body.is_multiplayer_authority() and body.INFO.isHosting:
+	if body is Player and body.is_multiplayer_authority() and body.INFO.isHosting:
 		print("Joueur %s entré dans %s" % [body.name, item_name])
 		body.set_interactable_item(self)
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
-	if body is CharacterBody2D and body.is_multiplayer_authority() and body.INFO.isHosting:
+	if body is Player and body.is_multiplayer_authority() and body.INFO.isHosting:
 		print("Joueur %s sortit de %s" % [body.name, item_name])
 		body.set_interactable_item(null)
 
