@@ -6,7 +6,7 @@ extends Control
 	gridContainer = $GridContainer
 }
 
-func set_player(playerInstance: Player) -> void:
+func set_player(playerInstance: Body) -> void:
 	NODES.player = playerInstance
 	NODES.player.inventory_updated.connect(_on_inventory_updated)
 	_on_inventory_updated()

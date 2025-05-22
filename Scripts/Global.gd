@@ -3,36 +3,24 @@ extends Node
 @onready var PATHES: Dictionary[StringName, PackedScene] = {inventorySlot = preload("res://Scenes/inventory_slot.tscn")}
 
 # Retourne le noeud du joueur demandé dans requestedPlayer
-func get_player_node(requestedPlayer: String) -> Player:
-	for node in get_tree().get_nodes_in_group("players"):
-		if node is Player:
-			if requestedPlayer == "host" and node.INFO.isHosting:
-				return node
-			elif requestedPlayer == "peer" and not node.INFO.isHosting:
-				return node
-	return null
+func get_player_node(requestedPlayer: String) -> Body:
+	return get_tree().get_nodes_in_group("bodies").front() if requestedPlayer == "body" else get_tree().get_nodes_in_group("spirits").front()
 
 func enforce_distance_from_host(inputVector: Vector2, position: Vector2, maxRange: float, delta: float) -> Vector2:
-	var hostNode: Player = self.get_player_node("host")
-	var hostPosition: Vector2 = hostNode.global_position
-	var hostCurrentSpeed: float = hostNode.INFO.currentSpeed
+	var bodyNode: Body = self.get_player_node("body")
+	var bodyPosition: Vector2 = bodyNode.global_position
+	var bodyCurrentSpeed: float = bodyNode.INFO.currentSpeed
 
 	# Prévoir la position à la prochaine frame
-	var predictedPosition: Vector2 = position + inputVector.normalized() * hostCurrentSpeed * delta
-	var predictedDistance: float = predictedPosition.distance_to(hostPosition)
+	var predictedPosition: Vector2 = position + inputVector.normalized() * bodyCurrentSpeed * delta
+	var predictedDistance: float = predictedPosition.distance_to(bodyPosition)
 
 	if predictedDistance > maxRange:
 		# Si on sort du rayon autorisé, on force le déplacement vers l'hôte
-		var vectorToHost: Vector2 = (hostPosition - position).normalized()
-		return vectorToHost * hostCurrentSpeed
+		var vectorToHost: Vector2 = (bodyPosition - position).normalized()
+		return vectorToHost * bodyCurrentSpeed
 	
-	return inputVector.normalized() * hostCurrentSpeed
-
-func get_own_player_node() -> Node:
-	for node in get_tree().get_nodes_in_group("players"):
-		if node.get_multiplayer_authority() == multiplayer.get_unique_id():
-			return node
-	return null
+	return inputVector.normalized() * bodyCurrentSpeed
 	
 func adjust_drop_position(position: Vector2) -> Vector2:
 	var radius = 10

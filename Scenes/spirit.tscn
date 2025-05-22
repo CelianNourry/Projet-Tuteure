@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=3 uid="uid://doo0t2c4p1lrx"]
+
+[ext_resource type="Script" uid="uid://xjyutfl5rw6g" path="res://esprit.gd" id="1_pl2su"]
+[ext_resource type="Texture2D" uid="uid://bmmu3bkulbhor" path="res://sprites/characters/Sprite-0002.png" id="2_t3la0"]
+[ext_resource type="Texture2D" uid="uid://ci5wo3n1p1p73" path="res://sprites/characters/Sprite-0003.png" id="3_wpqfu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3oftk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3jrk6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_t3la0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_wpqfu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="FontFile" id="FontFile_j2poh"]
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/30/0 = Vector2(0, 0)
+cache/0/30/0/ascent = 0.0
+cache/0/30/0/descent = 0.0
+cache/0/30/0/underline_position = 0.0
+cache/0/30/0/underline_thickness = 0.0
+cache/0/30/0/scale = 1.0
+cache/0/30/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/30/0/kerning_overrides/30/0 = Vector2(0, 0)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ypt8m"]
+properties/0/path = NodePath("Camera2D:enabled")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Spirit" type="CharacterBody2D"]
+script = ExtResource("1_pl2su")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3oftk")
+disabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+sprite_frames = SubResource("SpriteFrames_3jrk6")
+animation = &"idle"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[node name="InteractUI" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="InteractUI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 260.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(0.388235, 0.290196, 0.152941, 1)
+
+[node name="Label" type="Label" parent="InteractUI/ColorRect"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = SubResource("FontFile_j2poh")
+theme_override_font_sizes/font_size = 30
+text = "E"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ypt8m")

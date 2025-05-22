@@ -2,7 +2,10 @@ extends Node2D
 
 @onready var NODES: Dictionary[StringName, Node] = {multiplayerUI = $UI/Multiplayer}
 @onready var MULTIPLAYER: Dictionary[StringName, MultiplayerPeer] = {peer = ENetMultiplayerPeer.new()}
-const PATHES: Dictionary[StringName, PackedScene] = {player = preload("res://Scenes/Chara_Movement.tscn")}
+const PATHES: Dictionary[StringName, PackedScene] = {
+	body = preload("res://Scenes/body.tscn"),
+	spirit = preload("res://Scenes/spirit.tscn")
+	}
 
 func _on_host_pressed() -> void:
 	MULTIPLAYER.peer.create_server(4242)
@@ -23,6 +26,11 @@ func _on_join_pressed() -> void:
 	NODES.multiplayerUI.hide()
 
 func add_player(pid: int) -> void:
-	var player: Player = PATHES.player.instantiate()
-	player.name = str(pid)
-	add_child(player)
+	if pid == multiplayer.get_unique_id():
+		var body: Body = PATHES.body.instantiate()
+		body.name = str(pid)
+		add_child(body)
+	else:
+		var spirit: Spirit = PATHES.spirit.instantiate()
+		spirit.name = str(pid)
+		add_child(spirit)

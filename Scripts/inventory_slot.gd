@@ -44,13 +44,13 @@ func set_item(new_item: Dictionary) -> void:
 func _on_use_button_pressed() -> void:
 	NODES.usagePannel.visible = false
 	if item != {} and item["effect"] != "":
-		var player = Global.get_own_player_node()
+		var player = Global.get_player_node("body")
 		player.apply_item_effect(item)
 		player.remove_item(item["name"], item["effect"])
 
 func _on_drop_button_pressed() -> void:
 	if item != {}:
-		var player = Global.get_own_player_node()
+		var player = Global.get_player_node("body")
 		var drop_position = player.global_position
 		var drop_offset = Vector2(0, 50).rotated(player.rotation)
 		Global.drop_item.rpc(item, drop_position + drop_offset)

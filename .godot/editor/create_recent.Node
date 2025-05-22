@@ -1,10 +1,11 @@
+Camera2D
+MultiplayerSynchronizer
+AnimatedSprite2D
 CollisionShape2D
+CharacterBody2D
 Area2D
 TileMapLayer
 NavigationAgent2D
-CharacterBody2D
 StaticBody2D
 RayCast2D
 Sprite2D
-MultiplayerSynchronizer
-Camera2D

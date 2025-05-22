@@ -33,19 +33,19 @@ func generate_raycasts() -> void:
 
 # Activer le raycasting de l'ennemi seulement s'il l'hote est autour de lui 
 func _on_FOV_body_entered(body: Node2D) -> void:
-	if body is Player and body.INFO.isHosting:
+	if body is Body:
 		for ray: Node in self.get_children():
 			if ray is RayCast2D:
 				ray.enabled = true
 
 func _on_FOV_body_exited(body: Node2D) -> void:
-	if body is Player and body.INFO.isHosting:
+	if body is Body:
 		for ray: Node in self.get_children():
 			if ray is RayCast2D:
 				ray.enabled = false
 
 func _on_hit_radius_body_entered(body: Node2D) -> void:
-	if body is Player and body.INFO.isHosting:
+	if body is Body:
 		if INFO.target != null:
 				INFO.target.NODES.bleeding.emitting = true
 				INFO.target.INFO.idleStaminaGain = 1.00
@@ -55,7 +55,7 @@ func _physics_process(delta: float) -> void:
 
 	for ray: Node in self.get_children():
 		if ray is RayCast2D:
-			if ray.is_colliding() and ray.get_collider() is Player and ray.get_collider().INFO.isHosting:
+			if ray.is_colliding() and ray.get_collider() is Body:
 				INFO.target = ray.get_collider()
 				INFO.lastSeenPlayerPosition = INFO.target.global_position
 

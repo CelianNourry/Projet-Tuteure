@@ -1,4 +1,4 @@
-class_name Player
+class_name Body
 extends CharacterBody2D
 
 # Noeuds du joueur
@@ -19,7 +19,6 @@ extends CharacterBody2D
 	inventory = [],
 	
 	# Statuts
-	isHosting = null,
 	isMoving = false,
 	isSprinting = false,
 	isBleeding = false,
@@ -33,7 +32,6 @@ extends CharacterBody2D
 	walkStaminaLoss = 1.00,
 	sprintStaminaLoss = 5.00,
 	idleStaminaGain = 2.00,
-	maxSpiritRange = 300.00, # Rayon maximum auquel le pair peut se déplacer autour de l'hote
 	
 	# Position à la frame précédente
 	previousPosition = null
@@ -52,9 +50,7 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(self.name)))
 
 func _ready() -> void:
-	add_to_group("players") # Ajout du noeud dans le groupe de joueurs
-	INFO.isHosting = true if multiplayer.get_unique_id() == 1 else false # Le premier joueur est l'hote
-	NODES.collisionShape.disabled = !INFO.isHosting # On désactive les collisions pour l'esprit
+	add_to_group("bodies") # Ajout du noeud dans le groupe de joueurs
 	INFO.previousPosition = self.global_position
 	INFO.inventory.resize(12)
 	
@@ -62,7 +58,6 @@ func _ready() -> void:
 	
 	NODES.camera.enabled = true
 	NODES.staminaBar.visible = true
-	NODES.animatedSprite.visible = INFO.isHosting
 	NODES.inventoryControl.set_player(self)
 
 func _physics_process(delta: float) -> void:
@@ -119,11 +114,7 @@ func _physics_process(delta: float) -> void:
 	update_animated_sprite(anim)
 	INFO.previousPosition = self.global_position
 
-	# Le pair doit rester dans un rayon atour de l'hote
-	if !INFO.isHosting:
-		velocity = Global.enforce_distance_from_host(inputVector, self.global_position, INFO.maxSpiritRange, delta)
-	else:
-		velocity = inputVector.normalized() * INFO.currentSpeed
+	velocity = inputVector.normalized() * INFO.currentSpeed
 	set_velocity(velocity)
 	move_and_slide()
 
@@ -145,10 +136,10 @@ func set_interactable_back_door(door: Door) -> void:
 func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): return
 	
-	if event.is_action_pressed("ui_inventory") and INFO.isHosting:
+	if event.is_action_pressed("ui_inventory"):
 		print("Le joueur ", self, " a interagit avec l'inventaire")
 		NODES.inventoryUI.visible = !NODES.inventoryUI.visible
-	elif event.is_action_pressed("ui_add") and INTERACTABLES.item and INFO.isHosting:
+	elif event.is_action_pressed("ui_add") and INTERACTABLES.item:
 		print("Prise de l'item : ", INTERACTABLES.item.name)
 		INTERACTABLES.item.pickup_item(self)
 	elif INTERACTABLES.frontDoor:
