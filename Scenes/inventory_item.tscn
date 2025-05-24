@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://esi0y8qe11qt" path="res://Scripts/inventory_item.gd" id="1_yv81n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nv763"]
-radius = 14.0
+radius = 3.0
 
 [node name="Inventory_Item" type="Node2D" groups=["Items"]]
 script = ExtResource("1_yv81n")
@@ -11,6 +11,8 @@ script = ExtResource("1_yv81n")
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+z_index = 2
+y_sort_enabled = true
 shape = SubResource("CircleShape2D_nv763")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

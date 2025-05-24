@@ -4,10 +4,7 @@ res://enemy.tscn
 res://Scenes/inventory_item.tscn
 res://Scenes/spirit.tscn
 res://Scenes/body.tscn
-res://Scenes/test.tscn
-res://enemy.gd
-res://Scenes/test.gd
-res://Scripts/Global.gd
-res://Scripts/body.gd
 res://Scenes/Stamina_bar.tscn
-res://Scripts/Stamina_bar.gd
+res://Scenes/enemy.tscn
+res://Scenes/door.tscn
+res://Scenes/bloodtrail.tscn

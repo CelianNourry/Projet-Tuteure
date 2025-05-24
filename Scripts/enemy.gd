@@ -13,7 +13,7 @@ extends CharacterBody2D
 	angleBetweenRays = deg_to_rad(5.00), # Angle entre chaque raycast
 	
 	maxViewDistance = 800.00, # Distance maximale à laquelle l'ennemi peut voir
-	speed = 100.00, # Vitesse de l'ennemi
+	speed = 30.00, # Vitesse de l'ennemi
 
 	target = null, # La cible del'ennemi
 	lastSeenTargetPosition = null, # La dernière position d'une cible vue par l'ennemi
@@ -109,11 +109,11 @@ func _physics_process(delta: float) -> void:
 
 	if INFO.target:
 		NODES.navigationAgent.target_position = INFO.lastSeenTargetPosition
-		INFO.speed = 100.0
+		INFO.speed = 50.0
 
 	elif not INFO.traveledToTarget:
 		NODES.navigationAgent.target_position = INFO.lastSeenTargetPosition
-		INFO.speed = 100.0
+		INFO.speed = 50.0
 		if global_position.distance_to(INFO.lastSeenTargetPosition) < 10.0:
 			INFO.traveledToTarget = true
 			reached_patrol_point = true
@@ -121,7 +121,7 @@ func _physics_process(delta: float) -> void:
 	elif reached_patrol_point or NODES.navigationAgent.is_navigation_finished():
 		current_patrol_point = get_random_patrol_point()
 		NODES.navigationAgent.target_position = current_patrol_point
-		INFO.speed = 50.0
+		INFO.speed = 30.0
 		reached_patrol_point = false
 
 	var next_point = NODES.navigationAgent.get_next_path_position()

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmmu3bkulbhor"
-path="res://.godot/imported/Sprite-0002.png-56b2412daa471f537ddd887055a8fdbe.ctex"
+uid="uid://1aj13xki8ryx"
+path="res://.godot/imported/ISO-Test-Ennemy.png-c217dfb85b28d748700588b1a0f4fd6a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/characters/Sprite-0002.png"
-dest_files=["res://.godot/imported/Sprite-0002.png-56b2412daa471f537ddd887055a8fdbe.ctex"]
+source_file="res://sprites/characters/ISO-Test-Ennemy.png"
+dest_files=["res://.godot/imported/ISO-Test-Ennemy.png-c217dfb85b28d748700588b1a0f4fd6a.ctex"]
 
 [params]
 

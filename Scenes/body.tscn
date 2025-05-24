@@ -1,17 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://dibqwc2agd7rr"]
+[gd_scene load_steps=12 format=3 uid="uid://dibqwc2agd7rr"]
 
 [ext_resource type="Script" uid="uid://dw0nh1t3fi83d" path="res://Scripts/body.gd" id="1_8wq5q"]
-[ext_resource type="Texture2D" uid="uid://bmmu3bkulbhor" path="res://sprites/characters/Sprite-0002.png" id="1_q2pd1"]
-[ext_resource type="Texture2D" uid="uid://ci5wo3n1p1p73" path="res://sprites/characters/Sprite-0003.png" id="2_8wq5q"]
 [ext_resource type="PackedScene" uid="uid://dsc0dbeu865uh" path="res://Scenes/bloodtrail.tscn" id="3_lwtj6"]
+[ext_resource type="Texture2D" uid="uid://46f08vw0j2gv" path="res://sprites/characters/ISO-Test-Player.png" id="3_q2pd1"]
 [ext_resource type="PackedScene" uid="uid://bej655obpoitl" path="res://Scenes/inventory_ui.tscn" id="4_80q7h"]
 [ext_resource type="PackedScene" uid="uid://c0kqjdkjmxm6i" path="res://Scenes/Stamina_bar.tscn" id="5_w6uka"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8wq5q"]
 radius = 81.615
-
-[sub_resource type="RectangleShape2D" id="1"]
-size = Vector2(31, 32)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bkb0v"]
 particle_flag_disable_z = true
@@ -22,7 +18,7 @@ color = Color(0.580392, 0.0823529, 0.0823529, 1)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_q2pd1")
+"texture": ExtResource("3_q2pd1")
 }],
 "loop": true,
 "name": &"idle",
@@ -30,10 +26,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_8wq5q")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_q2pd1")
+"texture": ExtResource("3_q2pd1")
 }],
 "loop": true,
 "name": &"walkdown",
@@ -41,10 +34,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_8wq5q")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_q2pd1")
+"texture": ExtResource("3_q2pd1")
 }],
 "loop": true,
 "name": &"walkleft",
@@ -52,10 +42,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_8wq5q")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_q2pd1")
+"texture": ExtResource("3_q2pd1")
 }],
 "loop": true,
 "name": &"walkright",
@@ -63,15 +50,15 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_8wq5q")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_q2pd1")
+"texture": ExtResource("3_q2pd1")
 }],
 "loop": true,
 "name": &"walkup",
 "speed": 5.0
 }]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lwtj6"]
+radius = 15.0333
 
 [sub_resource type="FontFile" id="FontFile_qycxt"]
 subpixel_positioning = 0
@@ -116,16 +103,16 @@ properties/6/spawn = true
 properties/6/replication_mode = 0
 
 [node name="Body" type="CharacterBody2D" groups=["Player"]]
+z_index = 1
+y_sort_enabled = true
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_8wq5q")
 
 [node name="Enemy_Detection_Range" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_Detection_Range"]
+visible = false
 shape = SubResource("CircleShape2D_8wq5q")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 0)
-shape = SubResource("1")
 
 [node name="bleeding" parent="." instance=ExtResource("3_lwtj6")]
 emitting = false
@@ -136,14 +123,20 @@ trail_lifetime = 10.0
 process_material = SubResource("ParticleProcessMaterial_bkb0v")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 2
+y_sort_enabled = true
 position = Vector2(0.5, 0)
 scale = Vector2(0.984375, 1)
 sprite_frames = SubResource("2")
-animation = &"walkdown"
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("CircleShape2D_lwtj6")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 enabled = false
-zoom = Vector2(2, 2)
+zoom = Vector2(8, 8)
 
 [node name="InventoryUI" type="CanvasLayer" parent="."]
 visible = false

@@ -1,24 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://doo0t2c4p1lrx"]
+[gd_scene load_steps=7 format=3 uid="uid://doo0t2c4p1lrx"]
 
-[ext_resource type="Script" uid="uid://xjyutfl5rw6g" path="res://esprit.gd" id="1_pl2su"]
-[ext_resource type="Texture2D" uid="uid://bmmu3bkulbhor" path="res://sprites/characters/Sprite-0002.png" id="2_t3la0"]
-[ext_resource type="Texture2D" uid="uid://ci5wo3n1p1p73" path="res://sprites/characters/Sprite-0003.png" id="3_wpqfu"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3oftk"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_3jrk6"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_t3la0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_wpqfu")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}]
+[ext_resource type="Script" uid="uid://xjyutfl5rw6g" path="res://Scripts/esprit.gd" id="1_pl2su"]
+[ext_resource type="Texture2D" uid="uid://46f08vw0j2gv" path="res://sprites/characters/ISO-Test-Player.png" id="2_oax80"]
 
 [sub_resource type="FontFile" id="FontFile_j2poh"]
 subpixel_positioning = 0
@@ -47,20 +30,60 @@ properties/1/path = NodePath(".:position")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_pl2su"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_oax80")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_oax80")
+}],
+"loop": true,
+"name": &"walkdown",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_oax80")
+}],
+"loop": true,
+"name": &"walkleft",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_oax80")
+}],
+"loop": true,
+"name": &"walkright",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_oax80")
+}],
+"loop": true,
+"name": &"walkup",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t3la0"]
+radius = 15.0333
+
 [node name="Spirit" type="CharacterBody2D"]
+z_index = 1
+y_sort_enabled = true
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_pl2su")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_3oftk")
-disabled = true
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-visible = false
-sprite_frames = SubResource("SpriteFrames_3jrk6")
-animation = &"idle"
-
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(4.5, 4.5)
 
 [node name="InteractUI" type="CanvasLayer" parent="."]
 visible = false
@@ -89,3 +112,15 @@ text = "E"
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ypt8m")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 2
+y_sort_enabled = true
+position = Vector2(0.5, 0)
+scale = Vector2(0.984375, 1)
+sprite_frames = SubResource("SpriteFrames_pl2su")
+animation = &"walkup"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("CircleShape2D_t3la0")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://btedin2k01plm"]
 
 [ext_resource type="Script" uid="uid://m0ps5w767dyf" path="res://Scripts/door.gd" id="1_p0e35"]
-[ext_resource type="Texture2D" uid="uid://ci5wo3n1p1p73" path="res://sprites/characters/Sprite-0003.png" id="1_w6aom"]
+[ext_resource type="Texture2D" uid="uid://1aj13xki8ryx" path="res://sprites/characters/ISO-Test-Ennemy.png" id="2_p0e35"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p0e35"]
 size = Vector2(20, 61)
@@ -10,6 +10,8 @@ size = Vector2(20, 61)
 size = Vector2(4, 50)
 
 [node name="Door" type="StaticBody2D"]
+z_index = 1
+y_sort_enabled = true
 script = ExtResource("1_p0e35")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -19,7 +21,7 @@ shape = SubResource("RectangleShape2D_p0e35")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-2.02656e-06, 20.5)
 scale = Vector2(0.65625, 1.92187)
-texture = ExtResource("1_w6aom")
+texture = ExtResource("2_p0e35")
 
 [node name="Back" type="Area2D" parent="."]
 

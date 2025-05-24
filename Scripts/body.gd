@@ -24,11 +24,11 @@ extends CharacterBody2D
 	isBleeding = false,
 	
 	# Statistiques
-	currentSpeed = 125.00,
+	currentSpeed = 50.00,
 	stamina = 100.00,
-	walkSpeed = 125.00,
-	sprintSpeed= 250.00,
-	tiredSpeed = 50.00,
+	walkSpeed = 50.00,
+	sprintSpeed= 100.00,
+	tiredSpeed = 30.00,
 	walkStaminaLoss = 1.00,
 	sprintStaminaLoss = 5.00,
 	idleStaminaGain = 2.00,

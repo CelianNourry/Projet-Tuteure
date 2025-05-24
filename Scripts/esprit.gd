@@ -15,8 +15,8 @@ extends CharacterBody2D
 	isMoving = false,
 	
 	# Statistiques
-	currentSpeed = 200.00,
-	walkSpeed = 200.00,
+	currentSpeed = 50.00,
+	walkSpeed = 50.00,
 	maxSpiritRange = 300.00, # Rayon maximum auquel le pair peut se déplacer autour de l'hote
 }
 
@@ -108,7 +108,7 @@ func apply_item_effect(item: Dictionary) -> void:
 	
 	match item["effect"]:
 		"Vitesse":
-			INFO.currentSpeed += 200.00
+			INFO.currentSpeed += 50.00
 			print("Vitesse augmentée de ", INFO.currentSpeed)
 		_ :
 			print("Aucun effet pour cet objet.")

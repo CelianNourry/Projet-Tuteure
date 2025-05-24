@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cp1gebv8qxiwy"
-path="res://.godot/imported/medkit.png-df1a3d69cb9625320b67a729f273b8e2.ctex"
+uid="uid://b3i6llu3ot7e4"
+path="res://.godot/imported/ISO-Tilemap.png-2b95de2720fe9e1a9755c60f2e4294eb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/items/medkit.png"
-dest_files=["res://.godot/imported/medkit.png-df1a3d69cb9625320b67a729f273b8e2.ctex"]
+source_file="res://sprites/ISO-Tilemap.png"
+dest_files=["res://.godot/imported/ISO-Tilemap.png-2b95de2720fe9e1a9755c60f2e4294eb.ctex"]
 
 [params]
 

@@ -1,3 +1,4 @@
+TileMapLayer
 CollisionShape2D
 Area2D
 CanvasLayer
@@ -8,6 +9,5 @@ CharacterBody2D
 Camera2D
 MultiplayerSynchronizer
 AnimatedSprite2D
-TileMapLayer
 StaticBody2D
 RayCast2D
