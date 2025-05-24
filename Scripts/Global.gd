@@ -21,6 +21,16 @@ func enforce_distance_from_host(inputVector: Vector2, position: Vector2, maxRang
 		return vectorToHost * bodyCurrentSpeed
 	
 	return inputVector.normalized() * bodyCurrentSpeed
+
+func generate_raycasts(node: Node, FOV, angleBetweenRays, maxViewDistance, enabled) -> void:
+	var raysToGenerate: int = int(FOV / angleBetweenRays)
+
+	for i in range(raysToGenerate):
+		var ray: RayCast2D = RayCast2D.new()
+		var angle : float= angleBetweenRays * (i - raysToGenerate / 2.0)
+		ray.target_position = Vector2.UP.rotated(angle) * maxViewDistance
+		ray.enabled = enabled
+		node.add_child(ray)
 	
 func adjust_drop_position(position: Vector2) -> Vector2:
 	var radius = 10

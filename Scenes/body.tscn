@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dibqwc2agd7rr"]
+[gd_scene load_steps=13 format=3 uid="uid://dibqwc2agd7rr"]
 
 [ext_resource type="Script" uid="uid://dw0nh1t3fi83d" path="res://Scripts/body.gd" id="1_8wq5q"]
 [ext_resource type="Texture2D" uid="uid://bmmu3bkulbhor" path="res://sprites/characters/Sprite-0002.png" id="1_q2pd1"]
@@ -7,8 +7,16 @@
 [ext_resource type="PackedScene" uid="uid://bej655obpoitl" path="res://Scenes/inventory_ui.tscn" id="4_80q7h"]
 [ext_resource type="PackedScene" uid="uid://c0kqjdkjmxm6i" path="res://Scenes/Stamina_bar.tscn" id="5_w6uka"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_8wq5q"]
+radius = 81.615
+
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(31, 32)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bkb0v"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+color = Color(0.580392, 0.0823529, 0.0823529, 1)
 
 [sub_resource type="SpriteFrames" id="2"]
 animations = [{
@@ -65,11 +73,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bkb0v"]
-particle_flag_disable_z = true
-gravity = Vector3(0, 0, 0)
-color = Color(0.580392, 0.0823529, 0.0823529, 1)
-
 [sub_resource type="FontFile" id="FontFile_qycxt"]
 subpixel_positioning = 0
 msdf_pixel_range = 14
@@ -115,15 +118,14 @@ properties/6/replication_mode = 0
 [node name="Body" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_8wq5q")
 
+[node name="Enemy_Detection_Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_Detection_Range"]
+shape = SubResource("CircleShape2D_8wq5q")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0)
 shape = SubResource("1")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0.5, 0)
-scale = Vector2(0.984375, 1)
-sprite_frames = SubResource("2")
-animation = &"walkdown"
 
 [node name="bleeding" parent="." instance=ExtResource("3_lwtj6")]
 emitting = false
@@ -132,6 +134,12 @@ lifetime = 60.0
 randomness = 1.0
 trail_lifetime = 10.0
 process_material = SubResource("ParticleProcessMaterial_bkb0v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0.5, 0)
+scale = Vector2(0.984375, 1)
+sprite_frames = SubResource("2")
+animation = &"walkdown"
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 enabled = false
@@ -199,17 +207,22 @@ text = "E"
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_xfolv")
 
-[node name="Stamina_bar" parent="." instance=ExtResource("5_w6uka")]
-visible = false
+[node name="Stamina_UI" type="CanvasLayer" parent="."]
+
+[node name="Stamina_bar" parent="Stamina_UI" instance=ExtResource("5_w6uka")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 214.0
-offset_top = 140.0
-offset_right = 278.0
-offset_bottom = 152.0
+offset_left = 424.0
+offset_top = 276.0
+offset_right = 488.0
+offset_bottom = 288.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 size_flags_vertical = 0
+
+[connection signal="body_entered" from="Enemy_Detection_Range" to="." method="_on_enemy_detection_range_body_entered"]
+[connection signal="body_exited" from="Enemy_Detection_Range" to="." method="_on_enemy_detection_range_body_exited"]

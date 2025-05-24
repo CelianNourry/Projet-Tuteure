@@ -1,8 +1,13 @@
 res://Scripts/default_env.tres
 res://Scenes/game.tscn
-res://Scenes/Chara_Movement.tscn
 res://enemy.tscn
 res://Scenes/inventory_item.tscn
 res://Scenes/spirit.tscn
 res://Scenes/body.tscn
-res://esprit.gd
+res://Scenes/test.tscn
+res://enemy.gd
+res://Scenes/test.gd
+res://Scripts/Global.gd
+res://Scripts/body.gd
+res://Scenes/Stamina_bar.tscn
+res://Scripts/Stamina_bar.gd

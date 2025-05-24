@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bmmu3bkulbhor" path="res://sprites/characters/Sprite-0002.png" id="1_7k104"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
-size = Vector2(32, 32)
+size = Vector2(30, 30)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
 radius = 830.0
@@ -21,10 +21,11 @@ script = ExtResource("1_4gyqm")
 shape = SubResource("RectangleShape2D_4gyqm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("1_7k104")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
+path_postprocessing = 1
 
 [node name="FOV" type="Area2D" parent="."]
 
@@ -35,6 +36,7 @@ shape = SubResource("CircleShape2D_4gyqm")
 [node name="Hit Radius" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hit Radius"]
+visible = false
 shape = SubResource("CircleShape2D_qi2p4")
 
 [connection signal="body_entered" from="FOV" to="." method="_on_FOV_body_entered"]

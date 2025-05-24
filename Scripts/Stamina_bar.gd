@@ -1,7 +1,7 @@
 extends TextureProgressBar
 
-# Noeud du parent, qui est censé etre le joueur
-@onready var player: Node2D = get_parent()
+# Noeud du grand-parent, qui est censé etre le joueur
+@onready var player: Body = get_parent().get_parent()
 
 @onready var blinkTimer: float
 const blinkInterval: float = 1.00

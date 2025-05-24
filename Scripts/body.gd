@@ -8,7 +8,7 @@ extends CharacterBody2D
 	inventoryControl = $InventoryUI/Inventory,
 	inventoryUI = $InventoryUI,
 	interactUI = $InteractUI,
-	staminaBar = $Stamina_bar,
+	staminaBar = $Stamina_UI/Stamina_bar,
 	camera = $PlayerCamera,
 	bleeding = $bleeding
 }
@@ -34,7 +34,14 @@ extends CharacterBody2D
 	idleStaminaGain = 2.00,
 	
 	# Position à la frame précédente
-	previousPosition = null
+	previousPosition = null,
+	
+	FOV = deg_to_rad(180.00), # Champ de vision
+	angleBetweenRays = deg_to_rad(5.00), # Angle entre chaque raycast
+	
+	maxViewDistance = 800.00, # Distance maximale à laquelle le joueur peut voir les ennemis
+	
+	enemyInRange = false
 }
 
 # Objets dont le joueur peut intéragir avec. Ils ne sont pas synchronisés entre les joueurs dans le MultiplayerSynchronizer
@@ -56,13 +63,23 @@ func _ready() -> void:
 	
 	if not is_multiplayer_authority(): return
 	
+	Global.generate_raycasts(self, INFO.FOV, INFO.angleBetweenRays, INFO.maxViewDistance, true)
 	NODES.camera.enabled = true
-	NODES.staminaBar.visible = true
 	NODES.inventoryControl.set_player(self)
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
 	
+	# Tous les ennemis sont rendus invisibles
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if not INFO.enemyInRange:
+			enemy.INFO.isRevealed = false
+	
+	# Mais tant que le joueur voit un ennemi, il le révèle
+	for ray in get_children():
+		if ray is RayCast2D and ray.is_colliding() and ray.get_collider() is Enemy:
+			ray.get_collider().INFO.isRevealed = true
+				
 	velocity = Vector2.ZERO
 	var anim: String = "idle"
 
@@ -113,6 +130,12 @@ func _physics_process(delta: float) -> void:
 
 	update_animated_sprite(anim)
 	INFO.previousPosition = self.global_position
+	
+	var direction = inputVector.normalized()
+
+	for node in get_children():
+		if node is Sprite2D or node is Area2D or node is RayCast2D:
+			node.rotation = lerp_angle(node.rotation,  direction.angle() + PI / 2, delta * 2.0)
 
 	velocity = inputVector.normalized() * INFO.currentSpeed
 	set_velocity(velocity)
@@ -135,6 +158,11 @@ func set_interactable_back_door(door: Door) -> void:
 		
 func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): return
+	
+	if event.is_action_pressed("zoom out") and not NODES.camera.zoom <= Vector2(0.5, 0.5):
+		NODES.camera.zoom -= Vector2(0.1, 0.1)
+	if event.is_action_pressed("zoom in") and not NODES.camera.zoom >= Vector2(4.0, 4.0):
+		NODES.camera.zoom += Vector2(0.1, 0.1)
 	
 	if event.is_action_pressed("ui_inventory"):
 		print("Le joueur ", self, " a interagit avec l'inventaire")
@@ -188,3 +216,14 @@ func remove_item(item_name: String, item_effect: String) -> bool:
 			inventory_updated.emit()
 			return true
 	return false
+
+# On rend les ennemis visibles s'ils sont très proche du joueur
+func _on_enemy_detection_range_body_entered(body: Node2D) -> void:
+	if body is Enemy:
+		body.INFO.isRevealed = true
+		INFO.enemyInRange = true
+
+func _on_enemy_detection_range_body_exited(body: Node2D) -> void:
+	if body is Enemy:
+		body.INFO.isRevealed = false
+		INFO.enemyInRange = false
