@@ -1,10 +1,15 @@
 res://Scripts/default_env.tres
 res://Scenes/game.tscn
-res://enemy.tscn
+res://Scenes/enemy.tscn
 res://Scenes/inventory_item.tscn
 res://Scenes/spirit.tscn
 res://Scenes/body.tscn
 res://Scenes/Stamina_bar.tscn
-res://Scenes/enemy.tscn
 res://Scenes/door.tscn
 res://Scenes/bloodtrail.tscn
+res://Scripts/body.gd
+res://Scripts/game.gd
+res://high_voltage_station.gd
+res://Scenes/high_voltage_station.tscn
+res://Scripts/high_voltage_station.gd
+res://Scripts/Global.gd

@@ -2,6 +2,10 @@ extends Node
 
 @onready var PATHES: Dictionary[StringName, PackedScene] = {inventorySlot = preload("res://Scenes/inventory_slot.tscn")}
 
+# Récupérer la racine du jeu depuis n'importe quel noeud
+func get_game_root() -> Node:
+	return get_tree().get_root().get_node("Game")
+
 # Retourne le noeud du joueur demandé dans requestedPlayer
 func get_player_node(requestedPlayer: String) -> Body:
 	return get_tree().get_nodes_in_group("bodies").front() if requestedPlayer == "body" else get_tree().get_nodes_in_group("spirits").front()

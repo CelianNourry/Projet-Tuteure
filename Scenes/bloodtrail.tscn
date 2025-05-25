@@ -9,6 +9,7 @@ gravity = Vector3(0, 0, 0)
 color = Color(0.34902, 0.0313726, 0.0313726, 1)
 
 [node name="GPUParticles2D" type="GPUParticles2D"]
+y_sort_enabled = true
 amount = 1
 texture = ExtResource("1")
 lifetime = 100.0

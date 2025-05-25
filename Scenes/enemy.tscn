@@ -13,7 +13,6 @@ radius = 830.0
 radius = 28.0713
 
 [node name="Enemy" type="CharacterBody2D"]
-z_index = 2
 y_sort_enabled = true
 scale = Vector2(0.5, 0.5)
 motion_mode = 1
@@ -21,6 +20,7 @@ wall_min_slide_angle = 0.0
 script = ExtResource("1_4gyqm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
 texture = ExtResource("2_4gyqm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

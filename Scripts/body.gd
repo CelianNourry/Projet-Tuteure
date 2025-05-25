@@ -37,7 +37,7 @@ extends CharacterBody2D
 	previousPosition = null,
 	
 	FOV = deg_to_rad(180.00), # Champ de vision
-	angleBetweenRays = deg_to_rad(5.00), # Angle entre chaque raycast
+	angleBetweenRays = deg_to_rad(1.00), # Angle entre chaque raycast
 	
 	maxViewDistance = 800.00, # Distance maximale à laquelle le joueur peut voir les ennemis
 	
@@ -49,6 +49,7 @@ extends CharacterBody2D
 	item = null,
 	frontDoor = null,
 	backDoor = null,
+	highVoltageStation = null
 }
 
 signal inventory_updated
@@ -71,9 +72,11 @@ func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
 	
 	# Tous les ennemis sont rendus invisibles
+	"""
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if not INFO.enemyInRange:
 			enemy.INFO.isRevealed = false
+	"""
 	
 	# Mais tant que le joueur voit un ennemi, il le révèle
 	for ray in get_children():
@@ -155,14 +158,18 @@ func set_interactable_front_door(door: Door) -> void:
 func set_interactable_back_door(door: Door) -> void:
 	INTERACTABLES.backDoor = door
 	NODES.interactUI.visible = door != null
+	
+func set_interactable_HVS(highVoltageStation: HVS) -> void:
+	INTERACTABLES.highVoltageStation = highVoltageStation
+	NODES.interactUI.visible = highVoltageStation != null
 		
 func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): return
 	
-	if event.is_action_pressed("zoom out") and not NODES.camera.zoom <= Vector2(0.5, 0.5):
-		NODES.camera.zoom -= Vector2(0.1, 0.1)
-	if event.is_action_pressed("zoom in") and not NODES.camera.zoom >= Vector2(4.0, 4.0):
-		NODES.camera.zoom += Vector2(0.1, 0.1)
+	if event.is_action_pressed("zoom out") and not NODES.camera.zoom <= Vector2(2.0, 2.0):
+		NODES.camera.zoom -= Vector2(0.3, 0.3)
+	if event.is_action_pressed("zoom in") and not NODES.camera.zoom >= Vector2(10.0, 10.0):
+		NODES.camera.zoom += Vector2(0.3, 0.3)
 	
 	if event.is_action_pressed("ui_inventory"):
 		print("Le joueur ", self, " a interagit avec l'inventaire")
@@ -178,6 +185,9 @@ func _input(event: InputEvent) -> void:
 			INTERACTABLES.backDoor.interact_with_back_door("interact")
 		elif event.is_action_pressed("lock"):
 			INTERACTABLES.backDoor.interact_with_back_door("lock")
+	elif INTERACTABLES.highVoltageStation:
+		if event.is_action_pressed("interact"):
+			INTERACTABLES.highVoltageStation.switch_power_state()
 			
 func apply_item_effect(item: Dictionary) -> void:
 	if not is_multiplayer_authority(): return

@@ -90,10 +90,6 @@ lock={
 ]
 }
 
-[navigation]
-
-2d/default_cell_size=4.0
-
 [physics]
 
 common/enable_pause_aware_picking=true

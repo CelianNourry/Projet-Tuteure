@@ -1,7 +1,10 @@
 extends Node2D
 
 # Noeuds du jeu
-@onready var NODES: Dictionary[StringName, Node] = {multiplayerUI = $UI/Multiplayer}
+@onready var NODES: Dictionary[StringName, Node] = {
+	multiplayerUI = $UI/Multiplayer,
+	floor1 = $"Floor 1"
+	}
 
 # Variables en rapport avec le multijoueur
 @onready var MULTIPLAYER: Dictionary[StringName, Variant] = {
@@ -15,6 +18,8 @@ const PATHES: Dictionary[StringName, PackedScene] = {
 	body = preload("res://Scenes/body.tscn"),
 	spirit = preload("res://Scenes/spirit.tscn")
 	}
+
+var power: bool = true
 
 func _on_host_pressed() -> void:
 	MULTIPLAYER.peer.create_server(4242)
@@ -39,6 +44,6 @@ func add_player(pid: int) -> bool:
 	if MULTIPLAYER.playerCount < MULTIPLAYER.maxPlayersAllowed:
 		var player: CharacterBody2D = PATHES.body.instantiate() if pid == multiplayer.get_unique_id() else PATHES.spirit.instantiate()
 		player.name = str(pid)
-		add_child(player)
+		NODES.floor1.add_child(player)
 		return true
 	return false

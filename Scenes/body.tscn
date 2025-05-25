@@ -103,7 +103,6 @@ properties/6/spawn = true
 properties/6/replication_mode = 0
 
 [node name="Body" type="CharacterBody2D" groups=["Player"]]
-z_index = 1
 y_sort_enabled = true
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_8wq5q")
@@ -112,6 +111,7 @@ script = ExtResource("1_8wq5q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_Detection_Range"]
 visible = false
+y_sort_enabled = true
 shape = SubResource("CircleShape2D_8wq5q")
 
 [node name="bleeding" parent="." instance=ExtResource("3_lwtj6")]
@@ -123,7 +123,6 @@ trail_lifetime = 10.0
 process_material = SubResource("ParticleProcessMaterial_bkb0v")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-z_index = 2
 y_sort_enabled = true
 position = Vector2(0.5, 0)
 scale = Vector2(0.984375, 1)
