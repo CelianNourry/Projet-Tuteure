@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dibqwc2agd7rr"]
+[gd_scene load_steps=13 format=3 uid="uid://dibqwc2agd7rr"]
 
 [ext_resource type="Script" uid="uid://dw0nh1t3fi83d" path="res://Scripts/body.gd" id="1_8wq5q"]
 [ext_resource type="PackedScene" uid="uid://dsc0dbeu865uh" path="res://Scenes/bloodtrail.tscn" id="3_lwtj6"]
@@ -57,9 +57,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_lwtj6"]
-radius = 15.0333
-
 [sub_resource type="FontFile" id="FontFile_qycxt"]
 subpixel_positioning = 0
 msdf_pixel_range = 14
@@ -102,6 +99,14 @@ properties/6/path = NodePath(".:INTERACTABLES")
 properties/6/spawn = true
 properties/6/replication_mode = 0
 
+[sub_resource type="Gradient" id="Gradient_bfnwt"]
+offsets = PackedFloat32Array(0.707792, 0.987013, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0.078125, 0.078125, 0.078125, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q2pd1"]
+gradient = SubResource("Gradient_bfnwt")
+use_hdr = true
+
 [node name="Body" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 scale = Vector2(0.5, 0.5)
@@ -129,9 +134,9 @@ scale = Vector2(0.984375, 1)
 sprite_frames = SubResource("2")
 animation = &"idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(0, 12)
-shape = SubResource("CircleShape2D_lwtj6")
+polygon = PackedVector2Array(0, 20, 16, 6, 2, -8, -14, 6)
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 enabled = false
@@ -215,6 +220,16 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
 size_flags_vertical = 0
+
+[node name="PointLight2D2" type="PointLight2D" parent="Stamina_UI"]
+visible = false
+y_sort_enabled = true
+position = Vector2(20.4482, 30.209)
+rotation = 0.959931
+scale = Vector2(0.782428, 0.0978788)
+color = Color(1, 1, 1, 0.588235)
+range_z_max = 1023
+texture = SubResource("GradientTexture2D_q2pd1")
 
 [connection signal="body_entered" from="Enemy_Detection_Range" to="." method="_on_enemy_detection_range_body_entered"]
 [connection signal="body_exited" from="Enemy_Detection_Range" to="." method="_on_enemy_detection_range_body_exited"]

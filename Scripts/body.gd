@@ -140,7 +140,7 @@ func _physics_process(delta: float) -> void:
 		if node is Sprite2D or node is Area2D or node is RayCast2D:
 			node.rotation = lerp_angle(node.rotation,  direction.angle() + PI / 2, delta * 2.0)
 
-	velocity = inputVector.normalized() * INFO.currentSpeed
+	velocity = direction * INFO.currentSpeed
 	set_velocity(velocity)
 	move_and_slide()
 

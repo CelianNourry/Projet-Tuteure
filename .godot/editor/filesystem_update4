@@ -7,9 +7,6 @@ res://Scenes/body.tscn
 res://Scenes/Stamina_bar.tscn
 res://Scenes/door.tscn
 res://Scenes/bloodtrail.tscn
-res://Scripts/body.gd
-res://Scripts/game.gd
-res://high_voltage_station.gd
 res://Scenes/high_voltage_station.tscn
-res://Scripts/high_voltage_station.gd
 res://Scripts/Global.gd
+res://Scripts/body.gd

@@ -1,9 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfoy54srrmyw3"]
+[gd_scene load_steps=6 format=3 uid="uid://cfoy54srrmyw3"]
 
 [ext_resource type="Script" uid="uid://br216odg2q6mm" path="res://Scripts/high_voltage_station.gd" id="1_bfnwt"]
 [ext_resource type="Texture2D" uid="uid://bog1lfuqdt3gu" path="res://sprites/interactables/high voltage station - ON.png" id="2_514dh"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8cebi"]
+
+[sub_resource type="Gradient" id="Gradient_bfnwt"]
+offsets = PackedFloat32Array(0, 0.402597, 0.831169)
+colors = PackedColorArray(1, 1, 1, 1, 0.078125, 0.078125, 0.078125, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_514dh"]
+gradient = SubResource("Gradient_bfnwt")
+use_hdr = true
 
 [node name="High Voltage Station" type="StaticBody2D"]
 y_sort_enabled = true
@@ -20,6 +28,14 @@ texture = ExtResource("2_514dh")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
 polygon = PackedVector2Array(8, 10, 5, 7, -4, 12, -1, 15)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(11, 9)
+rotation = 1.13446
+scale = Vector2(0.464599, 0.0283564)
+color = Color(1, 1, 0, 0.588235)
+range_z_max = 1023
+texture = SubResource("GradientTexture2D_514dh")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

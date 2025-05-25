@@ -25,6 +25,10 @@ func enforce_distance_from_host(inputVector: Vector2, position: Vector2, maxRang
 		return vectorToHost * bodyCurrentSpeed
 	
 	return inputVector.normalized() * bodyCurrentSpeed
+	
+func cartesian_to_isometric(cartesian: Vector2) -> Vector2:
+	return Vector2(cartesian.x - cartesian.y, (cartesian.x + cartesian.y) / 2)
+	
 
 func generate_raycasts(node: Node, FOV, angleBetweenRays, maxViewDistance, enabled) -> void:
 	var raysToGenerate: int = int(FOV / angleBetweenRays)
