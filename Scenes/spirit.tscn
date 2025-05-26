@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://xjyutfl5rw6g" path="res://Scripts/esprit.gd" id="1_pl2su"]
 [ext_resource type="Texture2D" uid="uid://46f08vw0j2gv" path="res://sprites/characters/ISO-Test-Player.png" id="2_oax80"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_t3la0"]
+radius = 15.0333
+
 [sub_resource type="FontFile" id="FontFile_j2poh"]
 subpixel_positioning = 0
 msdf_pixel_range = 14
@@ -21,14 +24,6 @@ cache/0/30/0/underline_thickness = 0.0
 cache/0/30/0/scale = 1.0
 cache/0/30/0/kerning_overrides/16/0 = Vector2(0, 0)
 cache/0/30/0/kerning_overrides/30/0 = Vector2(0, 0)
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ypt8m"]
-properties/0/path = NodePath("Camera2D:enabled")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:position")
-properties/1/spawn = true
-properties/1/replication_mode = 1
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pl2su"]
 animations = [{
@@ -73,15 +68,20 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_t3la0"]
-radius = 15.0333
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ypt8m"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 0
 
 [node name="Spirit" type="CharacterBody2D"]
-z_index = 1
-z_as_relative = false
 y_sort_enabled = true
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_pl2su")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("CircleShape2D_t3la0")
+disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4.5, 4.5)
@@ -111,17 +111,13 @@ theme_override_fonts/font = SubResource("FontFile_j2poh")
 theme_override_font_sizes/font_size = 30
 text = "E"
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_ypt8m")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-z_index = 2
+visible = false
 y_sort_enabled = true
 position = Vector2(0.5, 0)
 scale = Vector2(0.984375, 1)
 sprite_frames = SubResource("SpriteFrames_pl2su")
 animation = &"walkup"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 12)
-shape = SubResource("CircleShape2D_t3la0")
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ypt8m")

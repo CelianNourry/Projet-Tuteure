@@ -72,11 +72,9 @@ func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
 	
 	# Tous les ennemis sont rendus invisibles
-	"""
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if not INFO.enemyInRange:
 			enemy.INFO.isRevealed = false
-	"""
 	
 	# Mais tant que le joueur voit un ennemi, il le révèle
 	for ray in get_children():

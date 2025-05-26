@@ -6,7 +6,7 @@ extends CharacterBody2D
 	collisionShape = $CollisionShape2D,
 	animatedSprite = $AnimatedSprite2D,
 	camera = $Camera2D,
-	interactUI = $InteractUI,
+	interactUI = $InteractUI
 }
 
 # Informations actuelles du joueur. Elles ne sont pas synchronisées entre les joueurs dans le MultiplayerSynchronizer
@@ -15,7 +15,7 @@ extends CharacterBody2D
 	isMoving = false,
 	
 	# Statistiques
-	currentSpeed = 50.00,
+	currentSpeed = 100.00,
 	walkSpeed = 50.00,
 	maxSpiritRange = 300.00, # Rayon maximum auquel le pair peut se déplacer autour de l'hote
 }
@@ -31,7 +31,8 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(self.name)))
 
 func _ready() -> void:
-	add_to_group("esprits") # Ajout du noeud dans le groupe d'esprits
+	
+	add_to_group("spirits") # Ajout du noeud dans le groupe d'esprits
 	
 	if not is_multiplayer_authority(): return
 	
@@ -53,7 +54,6 @@ func _physics_process(delta: float) -> void:
 		float(Input.is_action_pressed("ui_w") or Input.is_action_pressed("ui_up"))
 	)
 	
-
 	# Si le joueur bouge, son animation se met à jour
 	if INFO.isMoving:
 		match inputVector:
@@ -72,7 +72,6 @@ func _physics_process(delta: float) -> void:
 
 	# L'esprit doit rester dans un rayon atour du corps
 	velocity = Global.enforce_distance_from_host(inputVector, self.global_position, INFO.maxSpiritRange, delta)
-
 	set_velocity(velocity)
 	move_and_slide()
 

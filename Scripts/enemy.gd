@@ -71,14 +71,12 @@ func get_random_patrol_point() -> Vector2:
 	if nav_map == null:
 		return global_position
 	
-	# Définis la taille de la carte (par exemple : un carré autour de la position actuelle)
 	var patrol_range := 800.00
 	var random_point := global_position + Vector2(
 		randf_range(-patrol_range, patrol_range),
 		randf_range(-patrol_range, patrol_range)
 	)
 	
-	# Trouve le point navigable le plus proche
 	var valid_point = NavigationServer2D.map_get_closest_point(nav_map, random_point)
 	return valid_point
 

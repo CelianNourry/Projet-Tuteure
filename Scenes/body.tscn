@@ -86,18 +86,15 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath("CollisionShape2D:disabled")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath("AnimatedSprite2D:visible")
+properties/3/path = NodePath("bleeding:emitting")
 properties/3/spawn = true
 properties/3/replication_mode = 1
-properties/4/path = NodePath("bleeding:emitting")
+properties/4/path = NodePath(".:INFO")
 properties/4/spawn = true
 properties/4/replication_mode = 1
-properties/5/path = NodePath(".:INFO")
+properties/5/path = NodePath(".:INTERACTABLES")
 properties/5/spawn = true
-properties/5/replication_mode = 1
-properties/6/path = NodePath(".:INTERACTABLES")
-properties/6/spawn = true
-properties/6/replication_mode = 0
+properties/5/replication_mode = 0
 
 [sub_resource type="Gradient" id="Gradient_bfnwt"]
 offsets = PackedFloat32Array(0.707792, 0.987013, 1)

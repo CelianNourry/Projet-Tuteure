@@ -1,6 +1,9 @@
+Node2D
+TileMap
+MultiplayerSynchronizer
+CanvasModulate
 Polygon2D
 PointLight2D
-CanvasModulate
 TileMapLayer
 CollisionPolygon2D
 Area2D
@@ -9,6 +12,3 @@ StaticBody2D
 CollisionShape2D
 CanvasLayer
 NavigationRegion2D
-NavigationAgent2D
-CharacterBody2D
-Camera2D
