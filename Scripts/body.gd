@@ -70,6 +70,20 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
+	var anim: String = "idle_S"
+	
+	############### MouvementS du joueur ######################################
+	var inputVector: Vector2 = Vector2(
+		float(Input.is_action_pressed("ui_d") or Input.is_action_pressed("ui_right")) -
+		float(Input.is_action_pressed("ui_a") or Input.is_action_pressed("ui_left")),
+		float(Input.is_action_pressed("ui_s") or Input.is_action_pressed("ui_down")) -
+		float(Input.is_action_pressed("ui_w") or Input.is_action_pressed("ui_up"))
+	).normalized()
+	inputVector = Global.cartesian_to_isometric(inputVector)
+	
+	set_velocity(inputVector * INFO.currentSpeed)
+	move_and_slide()
+	############################################################################
 	
 	# Tous les ennemis sont rendus invisibles
 	for enemy in get_tree().get_nodes_in_group("enemies"):
@@ -80,9 +94,6 @@ func _physics_process(delta: float) -> void:
 	for ray in get_children():
 		if ray is RayCast2D and ray.is_colliding() and ray.get_collider() is Enemy:
 			ray.get_collider().INFO.isRevealed = true
-				
-	velocity = Vector2.ZERO
-	var anim: String = "idle"
 
 	# Sprint
 	if Input.is_action_just_pressed("ui_shift") and INFO.stamina > 0:
@@ -92,30 +103,16 @@ func _physics_process(delta: float) -> void:
 		INFO.currentSpeed = INFO.walkSpeed
 		INFO.isSprinting = false
 
-	# Mouvement du joueur sous forme de vecteur
-	var inputVector: Vector2 = Vector2(
-		float(Input.is_action_pressed("ui_d") or Input.is_action_pressed("ui_right")) -
-		float(Input.is_action_pressed("ui_a") or Input.is_action_pressed("ui_left")),
-		float(Input.is_action_pressed("ui_s") or Input.is_action_pressed("ui_down")) -
-		float(Input.is_action_pressed("ui_w") or Input.is_action_pressed("ui_up"))
-	)
 	
 	# Tracking de si le joueur a bougé de 0.0100 ou pas
 	INFO.isMoving = global_position.distance_to(INFO.previousPosition) > 0.0100
 
 	# Si le joueur bouge, son animation se met à jour
 	if INFO.isMoving:
-		match inputVector:
-			Vector2.UP:
-				anim = "walkup"
-			Vector2.DOWN:
-				anim = "walkdown"
-			Vector2.RIGHT:
-				anim = "walkright"
-			Vector2.LEFT:
-				anim = "walkleft"
-			_:
-				anim = "idle"
+		var dir = Global.vector_to_compass_dir(inputVector)
+		#print(dir)
+		if dir != "None":
+			anim = "idle_" + dir
 				
 	# Si le joueur ne bouge pas, sa stamina augmente de idleStaminaGain
 	else: INFO.stamina += (INFO.idleStaminaGain * delta) if INFO.stamina < 100.00 else 0.00
@@ -131,16 +128,10 @@ func _physics_process(delta: float) -> void:
 
 	update_animated_sprite(anim)
 	INFO.previousPosition = self.global_position
-	
-	var direction = inputVector.normalized()
 
 	for node in get_children():
 		if node is Sprite2D or node is Area2D or node is RayCast2D:
-			node.rotation = lerp_angle(node.rotation,  direction.angle() + PI / 2, delta * 2.0)
-
-	velocity = direction * INFO.currentSpeed
-	set_velocity(velocity)
-	move_and_slide()
+			node.rotation = lerp_angle(node.rotation,  inputVector.angle() + PI / 2, delta * 2.0)
 
 func update_animated_sprite(anim: String) -> void:
 	NODES.animatedSprite.animation = anim

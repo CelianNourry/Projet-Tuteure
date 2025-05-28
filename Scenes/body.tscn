@@ -1,10 +1,18 @@
-[gd_scene load_steps=13 format=3 uid="uid://dibqwc2agd7rr"]
+[gd_scene load_steps=22 format=3 uid="uid://dibqwc2agd7rr"]
 
 [ext_resource type="Script" uid="uid://dw0nh1t3fi83d" path="res://Scripts/body.gd" id="1_8wq5q"]
 [ext_resource type="PackedScene" uid="uid://dsc0dbeu865uh" path="res://Scenes/bloodtrail.tscn" id="3_lwtj6"]
 [ext_resource type="Texture2D" uid="uid://46f08vw0j2gv" path="res://sprites/characters/ISO-Test-Player.png" id="3_q2pd1"]
+[ext_resource type="Texture2D" uid="uid://dhrhmi5j3k3b2" path="res://sprites/characters/body/idle/idle_E.png" id="3_uwu1r"]
 [ext_resource type="PackedScene" uid="uid://bej655obpoitl" path="res://Scenes/inventory_ui.tscn" id="4_80q7h"]
+[ext_resource type="Texture2D" uid="uid://s6j5najcd1fj" path="res://sprites/characters/body/idle/idle_N.png" id="4_yxsct"]
+[ext_resource type="Texture2D" uid="uid://c1s0akv43vk2u" path="res://sprites/characters/body/idle/idle_NE.png" id="5_b5fcs"]
 [ext_resource type="PackedScene" uid="uid://c0kqjdkjmxm6i" path="res://Scenes/Stamina_bar.tscn" id="5_w6uka"]
+[ext_resource type="Texture2D" uid="uid://diyih2t8cxchg" path="res://sprites/characters/body/idle/idle_NW.png" id="6_pilda"]
+[ext_resource type="Texture2D" uid="uid://cfr1va8hm1p7p" path="res://sprites/characters/body/idle/idle_S.png" id="7_r3cyl"]
+[ext_resource type="Texture2D" uid="uid://cgwhclo34vdgj" path="res://sprites/characters/body/idle/idle_SE.png" id="8_wf36i"]
+[ext_resource type="Texture2D" uid="uid://ogx3n5bdmxub" path="res://sprites/characters/body/idle/idle_SW.png" id="9_47rig"]
+[ext_resource type="Texture2D" uid="uid://dpi1lftxdcxh7" path="res://sprites/characters/body/idle/idle_W.png" id="10_yj7if"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8wq5q"]
 radius = 81.615
@@ -18,10 +26,66 @@ color = Color(0.580392, 0.0823529, 0.0823529, 1)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_q2pd1")
+"texture": ExtResource("3_uwu1r")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"idle_E",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_yxsct")
+}],
+"loop": true,
+"name": &"idle_N",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_b5fcs")
+}],
+"loop": true,
+"name": &"idle_NE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_pilda")
+}],
+"loop": true,
+"name": &"idle_NW",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_r3cyl")
+}],
+"loop": true,
+"name": &"idle_S",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_wf36i")
+}],
+"loop": true,
+"name": &"idle_SE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_47rig")
+}],
+"loop": true,
+"name": &"idle_SW",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_yj7if")
+}],
+"loop": true,
+"name": &"idle_W",
 "speed": 5.0
 }, {
 "frames": [{
@@ -56,6 +120,10 @@ animations = [{
 "name": &"walkup",
 "speed": 5.0
 }]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vwk4u"]
+radius = 10.6854
+height = 32.9832
 
 [sub_resource type="FontFile" id="FontFile_qycxt"]
 subpixel_positioning = 0
@@ -129,11 +197,12 @@ y_sort_enabled = true
 position = Vector2(0.5, 0)
 scale = Vector2(0.984375, 1)
 sprite_frames = SubResource("2")
-animation = &"idle"
+animation = &"idle_S"
 
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
-position = Vector2(0, 12)
-polygon = PackedVector2Array(0, 20, 16, 6, 2, -8, -14, 6)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-7.15256e-07, 24)
+rotation = 1.31598
+shape = SubResource("CapsuleShape2D_vwk4u")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 enabled = false

@@ -2,6 +2,24 @@ extends Node
 
 @onready var PATHES: Dictionary[StringName, PackedScene] = {inventorySlot = preload("res://Scenes/inventory_slot.tscn")}
 
+enum compassDir {
+	E = 0, NE = 1,
+	N = 2, NW = 3,
+	W = 4, SW = 5,
+	S = 6, SE = 7
+};
+
+const HEADINGS := ["E", "NE", "N", "NW", "W", "SW", "S", "SE"]
+
+func vector_to_compass_dir(vector: Vector2) -> String:
+	if vector == Vector2.ZERO:
+		return "None"
+
+	var angle := atan2(-vector.y, vector.x)
+	var octant := int(round(8 * angle / (2 * PI) + 8)) % 8
+
+	return HEADINGS[octant]
+	
 # Récupérer la racine du jeu depuis n'importe quel noeud
 func get_game_root() -> Node:
 	return get_tree().get_root().get_node("Game")
@@ -27,8 +45,17 @@ func enforce_distance_from_host(inputVector: Vector2, position: Vector2, maxRang
 	return inputVector.normalized() * bodyCurrentSpeed
 	
 func cartesian_to_isometric(cartesian: Vector2) -> Vector2:
-	return Vector2(cartesian.x - cartesian.y, (cartesian.x + cartesian.y) / 2)
+	return Vector2(cartesian.x - cartesian.y, (cartesian.x + cartesian.y) /2)
 	
+func rotate_vector(vec: Vector2, degrees: float) -> Vector2:
+	var radians = deg_to_rad(degrees)
+	var cos_angle = cos(radians)
+	var sin_angle = sin(radians)
+	return Vector2(
+		vec.x * cos_angle - vec.y * sin_angle,
+		vec.x * sin_angle + vec.y * cos_angle
+	)
+
 
 func generate_raycasts(node: Node, FOV, angleBetweenRays, maxViewDistance, enabled) -> void:
 	var raysToGenerate: int = int(FOV / angleBetweenRays)

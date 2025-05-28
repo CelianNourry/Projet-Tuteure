@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://ba0bwoka0ipls"]
+[gd_scene load_steps=7 format=3 uid="uid://ba0bwoka0ipls"]
 
 [ext_resource type="Script" uid="uid://dii5t5f260mqq" path="res://Scripts/inventory_slot.gd" id="1_7erqw"]
-[ext_resource type="Texture2D" uid="uid://b5e3a24s7dpdd" path="res://sprites/items/medkit.png" id="2_lcuao"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nslot"]
 
@@ -142,7 +141,6 @@ color = Color(0.388235, 0.290196, 0.152941, 1)
 [node name="ItemIcon" type="Sprite2D" parent="InnerBorder"]
 position = Vector2(75, 75)
 scale = Vector2(2, 2)
-texture = ExtResource("2_lcuao")
 
 [node name="ItemQuantity" type="Label" parent="InnerBorder"]
 layout_mode = 0
