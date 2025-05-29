@@ -1,4 +1,5 @@
+res://Scenes/characters/playables
+res://Scripts/characters/playables
 res://Scenes
-res://sprites
+res://Scenes/items
 res://
-res://sprites/characters

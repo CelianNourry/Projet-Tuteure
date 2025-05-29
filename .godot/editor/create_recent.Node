@@ -1,14 +1,14 @@
+Sprite2D
+MultiplayerSynchronizer
 CollisionShape2D
 Node2D
 TileMap
-MultiplayerSynchronizer
 CanvasModulate
 Polygon2D
 PointLight2D
 TileMapLayer
 CollisionPolygon2D
 Area2D
-Sprite2D
 StaticBody2D
 CanvasLayer
 NavigationRegion2D

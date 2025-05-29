@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6heylebabdxn"]
+
+[ext_resource type="PackedScene" uid="uid://c0kqjdkjmxm6i" path="res://Scenes/bars/bar.tscn" id="1_lohj1"]
+[ext_resource type="Script" uid="uid://dvc2r3gmk0i4a" path="res://Scripts/bars/staminaBar.gd" id="2_lwic8"]
+
+[node name="Stamina Bar" instance=ExtResource("1_lohj1")]
+script = ExtResource("2_lwic8")

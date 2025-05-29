@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game
 
 # Noeuds du jeu
 @onready var NODES: Dictionary[StringName, Node] = {
@@ -10,17 +11,17 @@ extends Node2D
 @onready var MULTIPLAYER: Dictionary[StringName, Variant] = {
 	peer = ENetMultiplayerPeer.new(),
 	playerCount = 0,
-	maxPlayersAllowed = 2
+	maxPlayersAllowed = 2,
 }
 
 # Chemins vers d'autres scènes
 const PATHES: Dictionary[StringName, PackedScene] = {
-	body = preload("res://Scenes/body.tscn"),
-	spirit = preload("res://Scenes/spirit.tscn")
+	body = preload("res://Scenes/characters/playables/body.tscn"),
+	spirit = preload("res://Scenes/characters/playables/spirit.tscn")
 	}
 
 @onready var INFO: Dictionary[StringName, Variant] = {
-	power = true
+	power = true,
 }
 
 """

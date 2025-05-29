@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bcw8jd8w0yrsa"]
 
-[ext_resource type="PackedScene" uid="uid://c0kqjdkjmxm6i" path="res://Scenes/Stamina_bar.tscn" id="1_wkwlf"]
+[ext_resource type="PackedScene" uid="uid://c0kqjdkjmxm6i" path="res://Scenes/bars/bar.tscn" id="1_wkwlf"]
 
 [node name="HUD" type="Control"]
 layout_mode = 3

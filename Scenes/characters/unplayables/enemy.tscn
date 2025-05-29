@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://cunlolotbvo74"]
+
+[ext_resource type="Script" uid="uid://bieiy0kvd3q5k" path="res://Scripts/characters/unplayables/enemy.gd" id="1_tls25"]
+[ext_resource type="Texture2D" uid="uid://1aj13xki8ryx" path="res://Sprites/characters/ISO-Test-Ennemy.png" id="2_hc55w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iifgy"]
+radius = 15.0333
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
+radius = 830.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qi2p4"]
+radius = 28.0713
+
+[node name="Enemy" type="CharacterBody2D"]
+y_sort_enabled = true
+scale = Vector2(0.5, 0.5)
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_tls25")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("2_hc55w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("CircleShape2D_iifgy")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_postprocessing = 1
+
+[node name="FOV" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FOV"]
+visible = false
+shape = SubResource("CircleShape2D_4gyqm")
+
+[node name="Hit Radius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hit Radius"]
+visible = false
+shape = SubResource("CircleShape2D_qi2p4")
+
+[connection signal="body_entered" from="FOV" to="." method="_on_FOV_body_entered"]
+[connection signal="body_exited" from="FOV" to="." method="_on_FOV_body_exited"]
+[connection signal="body_entered" from="Hit Radius" to="." method="_on_hit_radius_body_entered"]

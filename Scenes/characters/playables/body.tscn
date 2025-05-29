@@ -1,0 +1,303 @@
+[gd_scene load_steps=23 format=3 uid="uid://dibqwc2agd7rr"]
+
+[ext_resource type="Script" uid="uid://dw0nh1t3fi83d" path="res://Scripts/characters/playables/body.gd" id="1_p7a25"]
+[ext_resource type="PackedScene" uid="uid://dsc0dbeu865uh" path="res://Scenes/particles/bloodtrail.tscn" id="2_6wuuj"]
+[ext_resource type="Texture2D" uid="uid://dhrhmi5j3k3b2" path="res://Sprites/characters/body/idle/idle_E.png" id="3_rb3be"]
+[ext_resource type="Texture2D" uid="uid://s6j5najcd1fj" path="res://Sprites/characters/body/idle/idle_N.png" id="4_wh88j"]
+[ext_resource type="Texture2D" uid="uid://c1s0akv43vk2u" path="res://Sprites/characters/body/idle/idle_NE.png" id="5_qvcnn"]
+[ext_resource type="Texture2D" uid="uid://diyih2t8cxchg" path="res://Sprites/characters/body/idle/idle_NW.png" id="6_o66x4"]
+[ext_resource type="Texture2D" uid="uid://cfr1va8hm1p7p" path="res://Sprites/characters/body/idle/idle_S.png" id="7_ieuqm"]
+[ext_resource type="Texture2D" uid="uid://cgwhclo34vdgj" path="res://Sprites/characters/body/idle/idle_SE.png" id="8_u4jf7"]
+[ext_resource type="Texture2D" uid="uid://ogx3n5bdmxub" path="res://Sprites/characters/body/idle/idle_SW.png" id="9_m2ebx"]
+[ext_resource type="Texture2D" uid="uid://dpi1lftxdcxh7" path="res://Sprites/characters/body/idle/idle_W.png" id="10_6phvf"]
+[ext_resource type="Texture2D" uid="uid://46f08vw0j2gv" path="res://Sprites/characters/ISO-Test-Player.png" id="11_hoere"]
+[ext_resource type="PackedScene" uid="uid://bej655obpoitl" path="res://Scenes/inventory/UI.tscn" id="12_pbuck"]
+[ext_resource type="PackedScene" uid="uid://b6heylebabdxn" path="res://Scenes/bars/staminaBar.tscn" id="13_p1v8b"]
+[ext_resource type="PackedScene" uid="uid://bktfdsq6vwvjx" path="res://Scenes/bars/healthBar.tscn" id="14_dwhvd"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xfolv"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("AnimatedSprite2D:animation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("CollisionShape2D:disabled")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("bleeding:emitting")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:INFO")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath(".:INTERACTABLES")
+properties/5/spawn = true
+properties/5/replication_mode = 0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8wq5q"]
+radius = 81.615
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bkb0v"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+color = Color(0.580392, 0.0823529, 0.0823529, 1)
+
+[sub_resource type="SpriteFrames" id="2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_rb3be")
+}],
+"loop": true,
+"name": &"idle_E",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_wh88j")
+}],
+"loop": true,
+"name": &"idle_N",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_qvcnn")
+}],
+"loop": true,
+"name": &"idle_NE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_o66x4")
+}],
+"loop": true,
+"name": &"idle_NW",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_ieuqm")
+}],
+"loop": true,
+"name": &"idle_S",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_u4jf7")
+}],
+"loop": true,
+"name": &"idle_SE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_m2ebx")
+}],
+"loop": true,
+"name": &"idle_SW",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_6phvf")
+}],
+"loop": true,
+"name": &"idle_W",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_hoere")
+}],
+"loop": true,
+"name": &"walkdown",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_hoere")
+}],
+"loop": true,
+"name": &"walkleft",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_hoere")
+}],
+"loop": true,
+"name": &"walkright",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_hoere")
+}],
+"loop": true,
+"name": &"walkup",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vwk4u"]
+radius = 10.1812
+height = 29.1124
+
+[sub_resource type="FontFile" id="FontFile_qycxt"]
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/30/0 = Vector2(0, 0)
+cache/0/30/0/ascent = 0.0
+cache/0/30/0/descent = 0.0
+cache/0/30/0/underline_position = 0.0
+cache/0/30/0/underline_thickness = 0.0
+cache/0/30/0/scale = 1.0
+cache/0/30/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/30/0/kerning_overrides/30/0 = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_bfnwt"]
+offsets = PackedFloat32Array(0.707792, 0.987013, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0.078125, 0.078125, 0.078125, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q2pd1"]
+gradient = SubResource("Gradient_bfnwt")
+use_hdr = true
+
+[node name="Body" type="CharacterBody2D" groups=["Player"]]
+y_sort_enabled = true
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_p7a25")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_xfolv")
+
+[node name="Enemy_Detection_Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_Detection_Range"]
+visible = false
+y_sort_enabled = true
+shape = SubResource("CircleShape2D_8wq5q")
+
+[node name="bleeding" parent="." instance=ExtResource("2_6wuuj")]
+emitting = false
+amount = 200
+lifetime = 60.0
+randomness = 1.0
+trail_lifetime = 10.0
+process_material = SubResource("ParticleProcessMaterial_bkb0v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0.5, 0)
+scale = Vector2(0.984375, 1)
+sprite_frames = SubResource("2")
+animation = &"idle_S"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-7.15256e-07, 24)
+rotation = 1.31598
+shape = SubResource("CapsuleShape2D_vwk4u")
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+enabled = false
+zoom = Vector2(8, 8)
+
+[node name="InventoryUI" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="InventoryUI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 85.0
+offset_top = 210.0
+offset_right = -84.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.388235, 0.290196, 0.152941, 1)
+
+[node name="Label" type="Label" parent="InventoryUI/ColorRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -66.5
+offset_top = 25.0
+offset_right = 26.5
+offset_bottom = 55.0
+grow_horizontal = 2
+scale = Vector2(1.5, 1.5)
+theme_override_font_sizes/font_size = 16
+text = "INVENTAIRE"
+vertical_alignment = 1
+
+[node name="Inventory" parent="InventoryUI" instance=ExtResource("12_pbuck")]
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="InteractUI" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="InteractUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -50.0
+offset_right = 150.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 8
+color = Color(0.388235, 0.290196, 0.152941, 1)
+
+[node name="Label" type="Label" parent="InteractUI/ColorRect"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = SubResource("FontFile_qycxt")
+theme_override_font_sizes/font_size = 30
+text = "ACTION"
+
+[node name="Stamina_UI" type="CanvasLayer" parent="."]
+
+[node name="Stamina Bar" parent="Stamina_UI" instance=ExtResource("13_p1v8b")]
+offset_left = 1000.0
+offset_top = 600.0
+offset_right = 1064.0
+offset_bottom = 612.0
+scale = Vector2(2, 2)
+
+[node name="Health_UI" type="CanvasLayer" parent="."]
+
+[node name="Health Bar" parent="Health_UI" instance=ExtResource("14_dwhvd")]
+offset_left = 1000.0
+offset_top = 560.0
+offset_right = 1064.0
+offset_bottom = 572.0
+scale = Vector2(2, 2)
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+visible = false
+y_sort_enabled = true
+position = Vector2(40.8964, 60.418)
+rotation = 0.959931
+scale = Vector2(1.56486, 0.195758)
+color = Color(1, 1, 1, 0.588235)
+range_z_max = 1023
+texture = SubResource("GradientTexture2D_q2pd1")
+
+[connection signal="body_entered" from="Enemy_Detection_Range" to="." method="_on_enemy_detection_range_body_entered"]
+[connection signal="body_exited" from="Enemy_Detection_Range" to="." method="_on_enemy_detection_range_body_exited"]
