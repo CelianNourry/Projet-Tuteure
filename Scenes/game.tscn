@@ -1,14 +1,19 @@
-[gd_scene load_steps=13 format=4 uid="uid://250u0fm1wgof"]
+[gd_scene load_steps=16 format=4 uid="uid://250u0fm1wgof"]
 
 [ext_resource type="Script" uid="uid://vy7eto66xif5" path="res://Scripts/game.gd" id="1_i6g32"]
 [ext_resource type="Texture2D" uid="uid://b3i6llu3ot7e4" path="res://Sprites/ISO-Tilemap.png" id="2_i6g32"]
+[ext_resource type="PackedScene" uid="uid://s86a7ss1dpry" path="res://Scenes/items/stimulant.tscn" id="3_i6g32"]
 [ext_resource type="PackedScene" uid="uid://cfoy54srrmyw3" path="res://Scenes/interactables/HVS.tscn" id="5_wowpa"]
 [ext_resource type="PackedScene" uid="uid://btedin2k01plm" path="res://Scenes/interactables/door.tscn" id="6_i6g32"]
 [ext_resource type="PackedScene" uid="uid://dyu03cw0glwrl" path="res://Scenes/items/medkit.tscn" id="7_1l0tm"]
+[ext_resource type="PackedScene" uid="uid://co0sdlrwamn2b" path="res://Scenes/interactables/light.tscn" id="7_v158k"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_wowpa"]
+properties/0/path = NodePath(".:INFO")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1l0tm"]
-vertices = PackedVector2Array(594.32, -62.9688, 629.656, 358.188, 505, 133.469, 505, 128.531, 328.867, 24.9688, 485, 118.531, 308.977, 45.3906, 302.93, 42.6875, 312.789, 37.8906, 393, 197.383, 369.18, 186.961, 387.383, 177.578, 389, 180.391, 465, 128.531, 328.789, 29.8906, 404.992, 153.617, 393.5, 160.242, 393.5, 159.078, 489.5, 191.078, 473.5, 200.281, 473.5, 199.078, 481, 175.617, 502.281, 184.93, 489.5, 192.281, 505.5, 183.078, 505, 183.359, 505, 173.383, 449, 227.062, 465, 218.812, 465, 219.062, 481, 210.812, 481, 211.062, 465, 167.617, 449, 213.188, 412.617, 166.75, 411.859, 165.461, 425.5, 158.438, 449, 159.617, 465, 166.609, 449, 146.883, 425.5, 143.078, 405.539, 154.57, 485, 143.469, -51.7969, 390.828, -149.039, -58.0312, 369, 199.617, 385, 207.617, 505.5, 198.438, 385, 206.609, 401, 214.609, 401, 215.617, 481, 174.609, 393, 198.383, 409, 205.383, 409, 206.383, 425, 213.383, 425, 226.117, 489, 166.383, 489, 165.383, 473, 158.383, 473, 157.383, 312.789, 37.6875, 309.023, 50.5391, 465, 133.469, 224.641, 45.8516, 240.594, 53.1328, 240.648, 53.8516, 290.508, 5.24219, 276.578, 14.3203, 274.508, 13.2422, 260.578, 22.3203, 258.508, 21.2422, 244.57, 30.3203, 242.5, 29.2422, 306.523, 13.2422, 306.172, 13.4609, 290.039, 59.3984, 369, 173.188, 261.422, 63.3438, 279.289, 54.6172, 224.281, 41.1328)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3, 5), PackedInt32Array(6, 7, 8), PackedInt32Array(9, 10, 11, 12), PackedInt32Array(4, 5, 13, 14), PackedInt32Array(15, 16, 17), PackedInt32Array(18, 19, 20, 21), PackedInt32Array(22, 23, 18), PackedInt32Array(21, 22, 18), PackedInt32Array(24, 25, 26), PackedInt32Array(27, 28, 29), PackedInt32Array(29, 30, 31), PackedInt32Array(32, 33, 34, 35, 36, 37, 38), PackedInt32Array(39, 37, 36, 40), PackedInt32Array(40, 41, 15), PackedInt32Array(42, 2, 1, 26), PackedInt32Array(1, 43, 44, 45, 46), PackedInt32Array(31, 47, 1), PackedInt32Array(9, 12, 34, 33), PackedInt32Array(29, 31, 1), PackedInt32Array(27, 29, 1), PackedInt32Array(45, 48, 46), PackedInt32Array(46, 49, 50), PackedInt32Array(32, 51, 21, 20, 33), PackedInt32Array(52, 9, 33, 53), PackedInt32Array(54, 53, 33, 55), PackedInt32Array(55, 33, 27, 56), PackedInt32Array(26, 57, 58), PackedInt32Array(58, 59, 60, 42), PackedInt32Array(8, 61, 14, 13), PackedInt32Array(62, 6, 8, 13, 63), PackedInt32Array(64, 65, 66), PackedInt32Array(67, 68, 69), PackedInt32Array(69, 70, 71), PackedInt32Array(71, 72, 73), PackedInt32Array(74, 75, 67), PackedInt32Array(39, 76, 62, 63, 60), PackedInt32Array(77, 78, 79, 76, 17), PackedInt32Array(0, 4, 74), PackedInt32Array(0, 74, 67), PackedInt32Array(44, 0, 67), PackedInt32Array(44, 67, 69), PackedInt32Array(44, 69, 71, 73), PackedInt32Array(44, 73, 80), PackedInt32Array(44, 80, 64), PackedInt32Array(1, 47, 24), PackedInt32Array(56, 27, 1), PackedInt32Array(1, 24, 26), PackedInt32Array(42, 26, 58), PackedInt32Array(63, 42, 60), PackedInt32Array(76, 39, 40), PackedInt32Array(76, 40, 15, 17), PackedInt32Array(78, 77, 45, 66), PackedInt32Array(64, 66, 45, 44), PackedInt32Array(1, 46, 50), PackedInt32Array(1, 50, 56)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-154, -62, 598, -67, 634, 362, -55, 395)])
 source_geometry_mode = 1
 source_geometry_group_name = &"navigation"
@@ -96,6 +101,10 @@ texture_region_size = Vector2i(32, 32)
 4:2/0/texture_origin = Vector2i(-16, -8)
 5:2/0 = 0
 5:2/0/texture_origin = Vector2i(0, -8)
+3:4/0 = 0
+3:5/0 = 0
+4:4/0 = 0
+4:5/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_v158k"]
 tile_shape = 1
@@ -150,12 +159,17 @@ sources/0 = SubResource("TileSetAtlasSource_wowpa")
 [node name="Game" type="Node2D"]
 script = ExtResource("1_i6g32")
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://dibqwc2agd7rr", "uid://doo0t2c4p1lrx")
+spawn_path = NodePath("../Floors/Floor 1")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_wowpa")
+
 [node name="Lighting" type="CanvasModulate" parent="."]
-visible = false
 color = Color(0.114539, 0.189768, 0.29395, 1)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-visible = false
 navigation_polygon = SubResource("NavigationPolygon_1l0tm")
 
 [node name="Floors" type="Node2D" parent="."]
@@ -182,12 +196,11 @@ position = Vector2(292, 23)
 [node name="Cage door" parent="Floors/Floor 1" instance=ExtResource("6_i6g32")]
 position = Vector2(376, 129)
 
-[node name="Medkit" parent="Floors/Floor 1" instance=ExtResource("7_1l0tm")]
-y_sort_enabled = true
-position = Vector2(436, 139)
+[node name="Light" parent="Floors/Floor 1" instance=ExtResource("7_v158k")]
+position = Vector2(401, 107)
 
 [node name="Floor 0" type="TileMapLayer" parent="Floors" groups=["navigation"]]
-light_mask = 3
+light_mask = 17
 z_as_relative = false
 y_sort_enabled = true
 position = Vector2(1, -1)
@@ -237,9 +250,12 @@ text = "Host"
 layout_mode = 2
 text = "Join"
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://dibqwc2agd7rr", "uid://doo0t2c4p1lrx")
-spawn_path = NodePath("../Floors/Floor 1")
+[node name="Medkit" parent="." instance=ExtResource("7_1l0tm")]
+y_sort_enabled = true
+position = Vector2(441, 158)
+
+[node name="Stimulant" parent="." instance=ExtResource("3_i6g32")]
+position = Vector2(456, 161)
 
 [connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="UI/Multiplayer/VBoxContainer/Join" to="." method="_on_join_pressed"]

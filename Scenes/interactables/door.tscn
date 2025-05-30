@@ -12,11 +12,16 @@ properties/0/replication_mode = 0
 size = Vector2(19.2311, 7.18797)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fahql"]
-size = Vector2(2.86602, 19.8141)
+size = Vector2(6.11912, 19.8141)
 
 [node name="Door" type="StaticBody2D"]
 y_sort_enabled = true
 script = ExtResource("1_p0e35")
+INFO = Dictionary[StringName, Variant]({
+&"locked": false,
+&"opened": false,
+&"seenByBody": false
+})
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_p0e35")
@@ -32,14 +37,14 @@ shape = SubResource("RectangleShape2D_p0e35")
 [node name="Back" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Back"]
-position = Vector2(14, 15)
+position = Vector2(13.7133, 16.5376)
 rotation = 1.01578
 shape = SubResource("RectangleShape2D_fahql")
 
 [node name="Front" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Front"]
-position = Vector2(18.5853, 23.2394)
+position = Vector2(17, 22)
 rotation = -2.0944
 shape = SubResource("RectangleShape2D_fahql")
 

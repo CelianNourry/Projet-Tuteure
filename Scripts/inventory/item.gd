@@ -2,9 +2,10 @@ class_name Item
 extends Node2D
 
 @onready var INFO: Dictionary[StringName, Variant] = {
-	name = "",
-	texture = Resource,
-	description = "",
+	name = "MISSING ITEM",
+	texture = "res://Sprites/missingTexture.png",
+	description = "MISSING DESCRIPTION",
+	scale = Vector2(1.0, 1.0),
 	scenePath = "res://Scenes/inventory/item.tscn"
 }
 
@@ -13,6 +14,10 @@ extends Node2D
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(name)))
 
+func initialize() -> void:
+	sprite.texture = INFO.texture
+	sprite.scale = INFO.scale
+
 func _ready() -> void:
 	# Set texture to reflect in the game
 	if not Engine.is_editor_hint():
@@ -20,12 +25,10 @@ func _ready() -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Body and body.is_multiplayer_authority():
-		print("Joueur %s entré dans %s" % [body.name, INFO.name])
 		body.set_interactable_item(self)
 
 func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body is Body and body.is_multiplayer_authority():
-		print("Joueur %s sortit de %s" % [body.name, INFO.name])
 		body.set_interactable_item(null)
 		
 @rpc("authority", "call_local")

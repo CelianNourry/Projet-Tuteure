@@ -1,0 +1,99 @@
+[gd_scene load_steps=11 format=3 uid="uid://co0sdlrwamn2b"]
+
+[ext_resource type="Script" uid="uid://dwkpqo0rk5qqf" path="res://Scripts/interactables/light.gd" id="1_1adt0"]
+[ext_resource type="Texture2D" uid="uid://coqhm2yavjh80" path="res://Sprites/interactables/upper street light - OFF.png" id="1_8sr6v"]
+[ext_resource type="Texture2D" uid="uid://d2qajdb4ewgdb" path="res://Sprites/interactables/upper street light - ON.png" id="2_1adt0"]
+[ext_resource type="Texture2D" uid="uid://bw7i3uwao0pvl" path="res://Sprites/interactables/lower street light.png" id="3_m0cpn"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1adt0"]
+properties/0/path = NodePath(".:_power")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("Sprite/Upper:animation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("Sprite/Upper:frame")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath("PointLight2D:color")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rch4y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_8sr6v")
+}],
+"loop": false,
+"name": &"OFF",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_1adt0")
+}],
+"loop": false,
+"name": &"ON",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1adt0"]
+radius = 5.0
+
+[sub_resource type="Gradient" id="Gradient_1adt0"]
+offsets = PackedFloat32Array(0.147436, 0.794872)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_m0cpn"]
+gradient = SubResource("Gradient_1adt0")
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.568182)
+fill_to = Vector2(0, 0.527273)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m0cpn"]
+radius = 38.0526
+
+[node name="Light" type="StaticBody2D" groups=["lights"]]
+y_sort_enabled = true
+script = ExtResource("1_1adt0")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_1adt0")
+
+[node name="Sprite" type="Node2D" parent="."]
+
+[node name="Upper" type="AnimatedSprite2D" parent="Sprite"]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(0, -32)
+sprite_frames = SubResource("SpriteFrames_rch4y")
+animation = &"OFF"
+
+[node name="Lower" type="Sprite2D" parent="Sprite"]
+texture = ExtResource("3_m0cpn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 13)
+shape = SubResource("CircleShape2D_1adt0")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(1, 1)
+scale = Vector2(6.60938, 4.64844)
+color = Color(1, 1, 0.105882, 1)
+range_item_cull_mask = 17
+texture = SubResource("GradientTexture2D_m0cpn")
+
+[node name="Flickering Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="Flickering Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Flickering Area2D"]
+position = Vector2(0, 13)
+shape = SubResource("CircleShape2D_m0cpn")
+
+[connection signal="timeout" from="Flickering Timer" to="." method="_on_flickering_timer_timeout"]
+[connection signal="body_entered" from="Flickering Area2D" to="." method="_on_flickering_area_2d_body_entered"]
+[connection signal="body_exited" from="Flickering Area2D" to="." method="_on_flickering_area_2d_body_exited"]

@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6vo780lvoxas"]
+
+[ext_resource type="PackedScene" uid="uid://c0kqjdkjmxm6i" path="res://Scenes/bars/bar.tscn" id="1_h3bke"]
+[ext_resource type="Script" uid="uid://ce6kt3vf60q5t" path="res://Scripts/bars/powerBar.gd" id="2_2ijak"]
+
+[node name="powerBar" instance=ExtResource("1_h3bke")]
+script = ExtResource("2_2ijak")

@@ -20,7 +20,8 @@ const PATHES: Dictionary[StringName, PackedScene] = {
 	spirit = preload("res://Scenes/characters/playables/spirit.tscn")
 	}
 
-@onready var INFO: Dictionary[StringName, Variant] = {
+# Informations sur le déroulé de la partie
+@export var INFO: Dictionary[StringName, bool] = {
 	power = true,
 }
 

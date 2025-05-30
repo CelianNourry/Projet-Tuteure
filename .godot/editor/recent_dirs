@@ -1,5 +1,9 @@
+res://Scripts/interactables
+res://Scenes/interactables
+res://Scenes/items
+res://Scenes/inventory
+res://Scenes/bars
 res://Scenes/characters/playables
 res://Scripts/characters/playables
 res://Scenes
-res://Scenes/items
 res://

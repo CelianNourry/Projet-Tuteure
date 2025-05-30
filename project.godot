@@ -23,6 +23,19 @@ Global="*res://Scripts/global.gd"
 window/size/resizable=false
 window/size/fullscreen=true
 
+[file_customization]
+
+folder_colors={
+"res://Scenes/": "green",
+"res://Scenes/bars/": "green",
+"res://Scripts/": "pink",
+"res://Sprites/": "blue"
+}
+
+[global_group]
+
+lights=""
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
@@ -89,6 +102,10 @@ lock={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":8,"position":Vector2(145, 10),"global_position":Vector2(154, 58),"factor":1.0,"button_index":4,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
+
+[layer_names]
+
+2d_render/layer_5="Light"
 
 [physics]
 

@@ -9,8 +9,8 @@ extends CharacterBody2D
 	inventoryUI = $InventoryUI,
 	interactUI = $InteractUI,
 	interactUILabel = $InteractUI/ColorRect/Label,
-	staminaBar = $"Stamina_UI/Stamina Bar",
-	healthBar = $"Health_UI/Health Bar",
+	staminaUI = $Stamina_UI,
+	healthUI = $Health_UI,
 	camera = $PlayerCamera,
 	bleeding = $bleeding
 }
@@ -22,7 +22,7 @@ extends CharacterBody2D
 	# Statuts
 	isMoving = false,
 	isSprinting = false,
-	isBleeding = true,
+	isBleeding = false,
 	
 	# Statistiques
 	currentSpeed = 50.00,
@@ -70,6 +70,8 @@ func _ready() -> void:
 	
 	Global.generate_raycasts(self, INFO.FOV, INFO.angleBetweenRays, INFO.maxViewDistance, true)
 	NODES.camera.enabled = true
+	NODES.staminaUI.visible = true
+	NODES.healthUI.visible = true
 	NODES.inventoryControl.set_player(self)
 
 func _physics_process(delta: float) -> void:
@@ -109,15 +111,17 @@ func _physics_process(delta: float) -> void:
 	# Tracking de si le joueur a bougé de 0.0100 ou pas
 	INFO.isMoving = global_position.distance_to(INFO.previousPosition) > 0.0100
 
+	var dir: String = Global.vector_to_compass_dir(inputVector)
 	# Si le joueur bouge, son animation se met à jour
 	if INFO.isMoving:
-		var dir = Global.vector_to_compass_dir(inputVector)
-		#print(dir)
 		if dir != "None":
-			anim = "idle_" + dir
+			anim = "run_" + dir
 				
 	# Si le joueur ne bouge pas, sa stamina augmente de idleStaminaGain
-	else: INFO.stamina += (INFO.idleStaminaGain * delta) if INFO.stamina < 100.00 else 0.00
+	else:
+		INFO.stamina += (INFO.idleStaminaGain * delta) if INFO.stamina < 100.00 else 0.00
+		if dir != "None":
+			anim = "idle_" + dir
 			
 	if global_position.distance_to(INFO.previousPosition) > 0.0100:
 		INFO.stamina -= (INFO.walkStaminaLoss * delta)
@@ -138,31 +142,49 @@ func _physics_process(delta: float) -> void:
 	update_animated_sprite(anim)
 	INFO.previousPosition = self.global_position
 
-	for node in get_children():
+	for node: Node in get_children():
 		if node is Sprite2D or node is Area2D or node is RayCast2D:
 			node.rotation = lerp_angle(node.rotation,  inputVector.angle() + PI / 2, delta * 2.0)
 
 func update_animated_sprite(anim: String) -> void:
 	NODES.animatedSprite.animation = anim
+	NODES.animatedSprite.play(anim)
 
 func set_interactable_item(item: Item) -> void:
 	INTERACTABLES.item = item
 	NODES.interactUI.visible = item != null
-	print(item)
 	if item != null:
-		NODES.interactUILabel.text = "E - Ramasser"
+		NODES.interactUILabel.text = Global.TEXT.E_open
 
 func set_interactable_front_door(door: Door) -> void:
 	INTERACTABLES.frontDoor = door
 	NODES.interactUI.visible = door != null
+	if door != null:
+		if door.INFO.opened:
+			NODES.interactUILabel.text = Global.TEXT.E_close
+		else:
+			NODES.interactUILabel.text = Global.TEXT.E_open
 	
 func set_interactable_back_door(door: Door) -> void:
 	INTERACTABLES.backDoor = door
 	NODES.interactUI.visible = door != null
+	if door != null:
+		if door.INFO.locked:
+			NODES.interactUILabel.text = Global.TEXT.L_unlock
+		else:
+			if door.INFO.opened:
+				NODES.interactUILabel.text = Global.TEXT.E_close
+			else:
+				NODES.interactUILabel.text = Global.TEXT.E_open
 	
 func set_interactable_HVS(highVoltageStation: HVS) -> void:
 	INTERACTABLES.highVoltageStation = highVoltageStation
 	NODES.interactUI.visible = highVoltageStation != null
+	if highVoltageStation != null:
+		if highVoltageStation._power:
+			NODES.interactUILabel.text = Global.TEXT.E_turnOff
+		else:
+			NODES.interactUILabel.text = Global.TEXT.E_turnOn
 		
 func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): return
@@ -173,27 +195,30 @@ func _input(event: InputEvent) -> void:
 		NODES.camera.zoom += Vector2(0.3, 0.3)
 	
 	if event.is_action_pressed("ui_inventory"):
-		print("Le joueur ", self, " a interagit avec l'inventaire")
+		print("Le joueur %s a %s l'inventaire" % [self.name, "fermé" if NODES.inventoryUI.visible else "ouvert"])
 		NODES.inventoryUI.visible = !NODES.inventoryUI.visible
 	elif event.is_action_pressed("ui_add") and INTERACTABLES.item:
-		print("Prise de l'item : ", INTERACTABLES.item.name)
+		print("Le joueur %s a ramassé un %s" % [self.name, INTERACTABLES.item.name])
 		INTERACTABLES.item.pickup_item(self)
 	elif INTERACTABLES.frontDoor:
 		if event.is_action_pressed("interact"):
 			INTERACTABLES.frontDoor.rpc("interact_with_front_door")
+			set_interactable_front_door(INTERACTABLES.frontDoor)
 	elif INTERACTABLES.backDoor:
 		if event.is_action_pressed("interact"):
 			INTERACTABLES.backDoor.rpc("interact_with_back_door", "interact")
+			set_interactable_back_door(INTERACTABLES.backDoor)
 		elif event.is_action_pressed("lock"):
 			INTERACTABLES.backDoor.rpc("interact_with_back_door", "lock")
-	elif INTERACTABLES.highVoltageStation:
-		if event.is_action_pressed("interact"):
-			INTERACTABLES.highVoltageStation.switch_power_state()
+			set_interactable_back_door(INTERACTABLES.backDoor)
+	elif INTERACTABLES.highVoltageStation and event.is_action_pressed("interact"):
+			INTERACTABLES.highVoltageStation.rpc("switch_power_state")
+			set_interactable_HVS(INTERACTABLES.highVoltageStation)
 
 # Ajout d'un item dans l'inventaire
 func add_item(item: Dictionary) -> bool:
 	for i in range(INFO.inventory.size()):
-		if INFO.inventory[i] != null and INFO.inventory[i]["name"] == item["name"] and INFO.inventory[i]["effect"] == item["effect"]:
+		if INFO.inventory[i] != null and INFO.inventory[i]["name"] == item["name"]:
 			INFO.inventory[i]["quantity"] += item["quantity"]
 			inventory_updated.emit()
 			return true
@@ -224,3 +249,7 @@ func _on_enemy_detection_range_body_exited(body: Node2D) -> void:
 	if body is Enemy:
 		body.INFO.isRevealed = false
 		INFO.enemyInRange = false
+		
+func stop_bleeding() -> void:
+	NODES.bleeding.emitting = false
+	INFO.idleStaminaGain = 2.00

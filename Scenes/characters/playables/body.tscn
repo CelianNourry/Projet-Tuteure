@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dibqwc2agd7rr"]
+[gd_scene load_steps=54 format=3 uid="uid://dibqwc2agd7rr"]
 
 [ext_resource type="Script" uid="uid://dw0nh1t3fi83d" path="res://Scripts/characters/playables/body.gd" id="1_p7a25"]
 [ext_resource type="PackedScene" uid="uid://dsc0dbeu865uh" path="res://Scenes/particles/bloodtrail.tscn" id="2_6wuuj"]
@@ -10,10 +10,41 @@
 [ext_resource type="Texture2D" uid="uid://cgwhclo34vdgj" path="res://Sprites/characters/body/idle/idle_SE.png" id="8_u4jf7"]
 [ext_resource type="Texture2D" uid="uid://ogx3n5bdmxub" path="res://Sprites/characters/body/idle/idle_SW.png" id="9_m2ebx"]
 [ext_resource type="Texture2D" uid="uid://dpi1lftxdcxh7" path="res://Sprites/characters/body/idle/idle_W.png" id="10_6phvf"]
-[ext_resource type="Texture2D" uid="uid://46f08vw0j2gv" path="res://Sprites/characters/ISO-Test-Player.png" id="11_hoere"]
+[ext_resource type="Texture2D" uid="uid://d2x1h5kbsjf3v" path="res://Sprites/characters/body/run/run_E/right_1.png" id="11_wdu7e"]
+[ext_resource type="Texture2D" uid="uid://c3kfmlgep6ybh" path="res://Sprites/characters/body/run/run_E/right_2.png" id="12_kpgis"]
 [ext_resource type="PackedScene" uid="uid://bej655obpoitl" path="res://Scenes/inventory/UI.tscn" id="12_pbuck"]
+[ext_resource type="Texture2D" uid="uid://dtnkjd3m0nics" path="res://Sprites/characters/body/run/run_E/right_3.png" id="13_648yt"]
 [ext_resource type="PackedScene" uid="uid://b6heylebabdxn" path="res://Scenes/bars/staminaBar.tscn" id="13_p1v8b"]
 [ext_resource type="PackedScene" uid="uid://bktfdsq6vwvjx" path="res://Scenes/bars/healthBar.tscn" id="14_dwhvd"]
+[ext_resource type="Texture2D" uid="uid://bu77gqtuwuxoy" path="res://Sprites/characters/body/run/run_E/right_4.png" id="14_tciky"]
+[ext_resource type="Texture2D" uid="uid://dm4o7580elfst" path="res://Sprites/characters/body/run/run_N/backward_1.png" id="15_5gree"]
+[ext_resource type="Texture2D" uid="uid://copirgiveans0" path="res://Sprites/characters/body/run/run_N/backward_2.png" id="16_l34xl"]
+[ext_resource type="Texture2D" uid="uid://x62q6m04imix" path="res://Sprites/characters/body/run/run_N/backward_3.png" id="17_303ww"]
+[ext_resource type="Texture2D" uid="uid://bmlgyt3fhc05i" path="res://Sprites/characters/body/run/run_N/backward_4.png" id="18_jafma"]
+[ext_resource type="Texture2D" uid="uid://bidg7okqbv6u7" path="res://Sprites/characters/body/run/run_NE/ne_1.png" id="19_aggpm"]
+[ext_resource type="Texture2D" uid="uid://rvjrbtabt16m" path="res://Sprites/characters/body/run/run_NE/ne_2.png" id="20_rn3nr"]
+[ext_resource type="Texture2D" uid="uid://b7lxaj85a23dr" path="res://Sprites/characters/body/run/run_NE/ne_3.png" id="21_1u4hs"]
+[ext_resource type="Texture2D" uid="uid://dr4w86mx75g30" path="res://Sprites/characters/body/run/run_NE/ne_4.png" id="22_8nfri"]
+[ext_resource type="Texture2D" uid="uid://cpdrv3yw30wfm" path="res://Sprites/characters/body/run/run_NW/nw_1.png" id="23_pbcan"]
+[ext_resource type="Texture2D" uid="uid://cq53gxahqiegs" path="res://Sprites/characters/body/run/run_NW/nw_2.png" id="24_ojo01"]
+[ext_resource type="Texture2D" uid="uid://bj5au2pc30dr6" path="res://Sprites/characters/body/run/run_NW/nw_3.png" id="25_bmegg"]
+[ext_resource type="Texture2D" uid="uid://e4qdqge1ur3g" path="res://Sprites/characters/body/run/run_NW/nw_4.png" id="26_l5cfn"]
+[ext_resource type="Texture2D" uid="uid://b5rl5sl6dufr6" path="res://Sprites/characters/body/run/run_S/forward_1.png" id="27_2albo"]
+[ext_resource type="Texture2D" uid="uid://bq57tit3w4f72" path="res://Sprites/characters/body/run/run_S/forward_2.png" id="28_0thv7"]
+[ext_resource type="Texture2D" uid="uid://kvx1dxbmiml2" path="res://Sprites/characters/body/run/run_S/forward_3.png" id="29_pxe62"]
+[ext_resource type="Texture2D" uid="uid://vyrg421w1yn" path="res://Sprites/characters/body/run/run_S/forward_4.png" id="30_vbu3m"]
+[ext_resource type="Texture2D" uid="uid://i763h01nihcs" path="res://Sprites/characters/body/run/run_SE/se_1.png" id="31_i53ur"]
+[ext_resource type="Texture2D" uid="uid://d2du071jqqywq" path="res://Sprites/characters/body/run/run_SE/se_2.png" id="32_856g6"]
+[ext_resource type="Texture2D" uid="uid://dm66whklql228" path="res://Sprites/characters/body/run/run_SE/se_3.png" id="33_dljig"]
+[ext_resource type="Texture2D" uid="uid://d0p85pv4qmfbo" path="res://Sprites/characters/body/run/run_SE/se_4.png" id="34_norgs"]
+[ext_resource type="Texture2D" uid="uid://gov0vh8yox1n" path="res://Sprites/characters/body/run/run_SW/sw_1.png" id="35_sq0lb"]
+[ext_resource type="Texture2D" uid="uid://cnvcw5pgdw0ll" path="res://Sprites/characters/body/run/run_SW/sw_2.png" id="36_puofh"]
+[ext_resource type="Texture2D" uid="uid://cxw5t3h277u7s" path="res://Sprites/characters/body/run/run_SW/sw_3.png" id="37_lgb4o"]
+[ext_resource type="Texture2D" uid="uid://555jafqa274m" path="res://Sprites/characters/body/run/run_SW/sw_4.png" id="38_wtcri"]
+[ext_resource type="Texture2D" uid="uid://bmnh8qpdojykx" path="res://Sprites/characters/body/run/run_W/left_1.png" id="39_f8m6l"]
+[ext_resource type="Texture2D" uid="uid://btx04rtayejmk" path="res://Sprites/characters/body/run/run_W/left_2.png" id="40_20j3l"]
+[ext_resource type="Texture2D" uid="uid://c48lthjh0vq6l" path="res://Sprites/characters/body/run/run_W/left_3.png" id="41_nxg3t"]
+[ext_resource type="Texture2D" uid="uid://cmguiskpvn5xo" path="res://Sprites/characters/body/run/run_W/left_4.png" id="42_hqjlp"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xfolv"]
 properties/0/path = NodePath(".:position")
@@ -22,18 +53,15 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath("AnimatedSprite2D:animation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("CollisionShape2D:disabled")
+properties/2/path = NodePath("bleeding:emitting")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-properties/3/path = NodePath("bleeding:emitting")
+properties/3/path = NodePath(".:INFO")
 properties/3/spawn = true
 properties/3/replication_mode = 1
-properties/4/path = NodePath(".:INFO")
+properties/4/path = NodePath("AnimatedSprite2D:frame")
 properties/4/spawn = true
 properties/4/replication_mode = 1
-properties/5/path = NodePath(".:INTERACTABLES")
-properties/5/spawn = true
-properties/5/replication_mode = 0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8wq5q"]
 radius = 81.615
@@ -111,34 +139,138 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("11_hoere")
+"texture": ExtResource("11_wdu7e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_kpgis")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_648yt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_tciky")
 }],
 "loop": true,
-"name": &"walkdown",
+"name": &"run_E",
 "speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("11_hoere")
+"texture": ExtResource("15_5gree")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_l34xl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_303ww")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_jafma")
 }],
 "loop": true,
-"name": &"walkleft",
+"name": &"run_N",
 "speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("11_hoere")
+"texture": ExtResource("19_aggpm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_rn3nr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_1u4hs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_8nfri")
 }],
 "loop": true,
-"name": &"walkright",
+"name": &"run_NE",
 "speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("11_hoere")
+"texture": ExtResource("23_pbcan")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_ojo01")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_bmegg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_l5cfn")
 }],
 "loop": true,
-"name": &"walkup",
+"name": &"run_NW",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_2albo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_0thv7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_pxe62")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_vbu3m")
+}],
+"loop": true,
+"name": &"run_S",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("31_i53ur")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_856g6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_dljig")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_norgs")
+}],
+"loop": true,
+"name": &"run_SE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_sq0lb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_puofh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_lgb4o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_wtcri")
+}],
+"loop": true,
+"name": &"run_SW",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("39_f8m6l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_20j3l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_nxg3t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_hqjlp")
+}],
+"loop": true,
+"name": &"run_W",
 "speed": 5.0
 }]
 
@@ -201,7 +333,7 @@ y_sort_enabled = true
 position = Vector2(0.5, 0)
 scale = Vector2(0.984375, 1)
 sprite_frames = SubResource("2")
-animation = &"idle_S"
+animation = &"run_NW"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-7.15256e-07, 24)
@@ -264,14 +396,24 @@ size_flags_horizontal = 8
 color = Color(0.388235, 0.290196, 0.152941, 1)
 
 [node name="Label" type="Label" parent="InteractUI/ColorRect"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -55.5
+offset_top = -21.0
+offset_right = 55.5
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = SubResource("FontFile_qycxt")
 theme_override_font_sizes/font_size = 30
 text = "ACTION"
 
 [node name="Stamina_UI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Stamina Bar" parent="Stamina_UI" instance=ExtResource("13_p1v8b")]
 offset_left = 1000.0
@@ -281,6 +423,7 @@ offset_bottom = 612.0
 scale = Vector2(2, 2)
 
 [node name="Health_UI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Health Bar" parent="Health_UI" instance=ExtResource("14_dwhvd")]
 offset_left = 1000.0

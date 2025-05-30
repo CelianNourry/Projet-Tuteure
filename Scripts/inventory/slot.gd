@@ -45,7 +45,7 @@ func _on_use_button_pressed() -> void:
 	NODES.usagePannel.visible = false
 	if item != {}:
 		var player = Global.get_player_node("body")
-		Global.instanciate_item(item).use(player)
+		Global.instanciate_item(item).use()
 		player.remove_item(item["name"])
 
 func _on_drop_button_pressed() -> void:
