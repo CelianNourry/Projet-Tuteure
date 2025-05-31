@@ -2,23 +2,14 @@
 extends Item
 class_name Medkit
 
-# Informations du Kit de soin
-const INFO_MEDKIT: Dictionary[StringName, Variant] = {
-	name = "Kit de soin",
-	description = "Utiliser le en cas de blessure.",
-	texture = preload("res://Sprites/items/medkit.png"),
-	scale = Vector2(1.010, 1.010),
-	scenePath = "res://Scenes/items/medkit.tscn"
-}
-
 func _ready() -> void:
-	INFO.name = INFO_MEDKIT.name
-	INFO.description = INFO_MEDKIT.description
-	INFO.texture = INFO_MEDKIT.texture
-	INFO.scale = INFO_MEDKIT.scale
-	INFO.scenePath = INFO_MEDKIT.scenePath
+	itemName = "Kit de soin"
+	itemDescription = "Utiliser le en cas de blessure."
+	itemTexture = preload("res://Sprites/items/medkit.png")
+	itemScale = Vector2(1.010, 1.010)
+	itemScenePath = "res://Scenes/items/medkit.tscn"
 	
 	initialize()
 
 func use() -> void:
-	Global.get_player_node("body").stopBleeding()
+	Global.get_player_node("body").stop_bleeding()

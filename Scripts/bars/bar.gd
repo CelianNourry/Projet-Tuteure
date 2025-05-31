@@ -1,27 +1,32 @@
 extends TextureProgressBar
 class_name Bar
 
-@onready var INFO: Dictionary[StringName, Variant] = {
-	player = get_parent().get_parent(),
-	blinkTimer = 0.00,
-	blinkInterval = 1.00,
-	veryLowStamina = 15.00,
-	veryLowProgressColor = null,
-	lowProgressColor = null,
-	highProgressColor = null
-}
+#region Informations
+@onready var player: CharacterBody2D = $"../.."
+
+var blinkTimer: float = 0.00
+
+const blinkInterval: float = 1.00
+const veryLowStamina: float = 15.00
+
+	#region Colors
+var veryLowProgressColor: Color
+var lowProgressColor: Color
+var highProgressColor: Color
+	#endregion
+#endregion
 
 func change_bar_color(percentage: float, delta: float) -> void:
-	if percentage > INFO.veryLowStamina:
+	if percentage > veryLowStamina:
 		# Interpolation entre vert et rouge
-		self.tint_progress = INFO.lowProgressColor.lerp(INFO.highProgressColor, clamp(percentage / 100.00, 0.00, 1.00))
+		self.tint_progress = lowProgressColor.lerp(highProgressColor, clamp(percentage / 100.00, 0.00, 1.00))
 		
 	else:
 		# Clignotement entre DARK_RED et BLACK si très faible pourcentage
-		INFO.blinkTimer += delta
-		self.tint_progress = INFO.veryLowProgressColor if INFO.blinkTimer < INFO.blinkInterval / 2 else Color.BLACK
+		blinkTimer += delta
+		self.tint_progress = veryLowProgressColor if blinkTimer < blinkInterval / 2 else Color.BLACK
 		
-		if INFO.blinkTimer > INFO.blinkInterval: INFO.blinkTimer = 0.00
+		if blinkTimer > blinkInterval: blinkTimer = 0.00
 
 func _physics_process(delta: float) -> void:
 	change_bar_color(self.value, delta)

@@ -1,16 +1,20 @@
 extends Node
 
-@onready var PATHES: Dictionary[StringName, PackedScene] = {inventorySlot = preload("res://Scenes/inventory/slot.tscn")}
-@onready var TEXT: Dictionary[StringName, String] = {
-	E_open = "E - Ouvrir",
-	E_close = "E - Fermer",
-	E_pickUp = "E - Ramasser",
-	E_turnOn = "E - Allumer",
-	E_turnOff = "E - Eteindre",
-	L_unlock = "L - Deverouiller",
-	L_lock = "L - Verouiller"
-}
+#region PATHES
+@onready var inventorySlot: Resource = preload("res://Scenes/inventory/slot.tscn")
+#endregion
 
+#region TEXT
+const E_open: String = "E - Ouvrir"
+const E_close: String = "E - Fermer"
+const E_pickUp: String = "E - Ramasser"
+const E_turnOn: String = "E - Allumer"
+const E_turnOff: String = "E - Eteindre"
+const L_unlock: String = "L - Deverouiller"
+const L_lock: String = "L - Verouiller"
+#endregion
+
+#region Compass
 enum compassDir {
 	E = 0, NE = 1,
 	N = 2, NW = 3,
@@ -19,6 +23,7 @@ enum compassDir {
 };
 
 const HEADINGS: Array[String] = ["E", "NE", "N", "NW", "W", "SW", "S", "SE"]
+#endregion
 
 func vector_to_compass_dir(vector: Vector2) -> String:
 	if vector == Vector2.ZERO:
@@ -46,12 +51,13 @@ func get_player_node(requestedPlayer: String) -> CharacterBody2D:
 			return null
 
 	var collectedNodes: Array[Node] = get_tree().get_nodes_in_group(requestedGroup)
+	
 	return collectedNodes.front() if not collectedNodes.is_empty() else null
 
 func enforce_distance_from_host(inputVector: Vector2, spiritSpeed: float, position: Vector2, maxRange: float, delta: float) -> Vector2:
 	var bodyNode: Body = self.get_player_node("body")
 	var bodyPosition: Vector2 = bodyNode.global_position
-	var bodyCurrentSpeed: float = bodyNode.INFO.currentSpeed
+	var bodyCurrentSpeed: float = bodyNode.currentSpeed
 
 	# Prévoir la position à la prochaine frame
 	var predictedPosition: Vector2 = position + inputVector.normalized() * bodyCurrentSpeed * delta
@@ -79,7 +85,7 @@ func rotate_vector(vec: Vector2, degrees: float) -> Vector2:
 	)
 """
 
-func generate_raycasts(node: Node, FOV, angleBetweenRays, maxViewDistance, enabled) -> void:
+func generate_raycasts(node: Node, FOV: float, angleBetweenRays: float, maxViewDistance: float, enabled: bool) -> void:
 	var raysToGenerate: int = int(FOV / angleBetweenRays)
 
 	for i in range(raysToGenerate):
@@ -90,26 +96,25 @@ func generate_raycasts(node: Node, FOV, angleBetweenRays, maxViewDistance, enabl
 		node.add_child(ray)
 	
 func adjust_drop_position(position: Vector2) -> Vector2:
-	var radius = 10
-	var nearby_items = get_tree().get_nodes_in_group("Items")
+	var radius: float = 10.00
+	var nearby_items: Array[Node] = get_tree().get_nodes_in_group("Items")
 
-	for item in nearby_items:
-		if item is Node2D:
-			if item.global_position.distance_to(position) < radius:
-				var random_offset = Vector2(randf_range(-radius, radius), randf_range(-radius, radius))
-				position += random_offset
-				break
+	for item: Item in nearby_items:
+		if item.global_position.distance_to(position) < radius:
+			var random_offset: Vector2 = Vector2(randf_range(-radius, radius), randf_range(-radius, radius))
+			position += random_offset
+			break
 	return position
 	
 func instanciate_item(itemData: Dictionary) -> Item:
-	var instance = load(itemData["scenePath"]).instantiate()
+	var instance: Item = load(itemData["scenePath"]).instantiate()
 	instance.set_item_data(itemData)
 	return instance
 	
 @rpc("any_peer", "call_local")
 func drop_item(item_data: Dictionary, drop_position: Vector2) -> void:
-	var item_scene = load(item_data["scenePath"])
-	var item_instance = item_scene.instantiate()
+	var item_scene: Resource = load(item_data["scenePath"])
+	var item_instance: Item = item_scene.instantiate()
 	item_instance.set_item_data(item_data)
 	drop_position = adjust_drop_position(drop_position)
 	item_instance.global_position = drop_position

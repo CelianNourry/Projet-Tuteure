@@ -1,8 +1,8 @@
+MultiplayerSynchronizer
 CollisionShape2D
 Area2D
 Timer
 StaticBody2D
-MultiplayerSynchronizer
 PointLight2D
 Node2D
 AnimatedSprite2D

@@ -1,29 +1,25 @@
 extends Node2D
 class_name Game
 
-# Noeuds du jeu
-@onready var NODES: Dictionary[StringName, Node] = {
-	multiplayerUI = $UI/Multiplayer,
-	floor1 = $"Floors/Floor 1"
-	}
+#region Nodes
+@onready var multiplayerUI: Control = $UI/Multiplayer
+@onready var floor1: TileMapLayer = $"Floors/Floor 1"
+#endregion
 
-# Variables en rapport avec le multijoueur
-@onready var MULTIPLAYER: Dictionary[StringName, Variant] = {
-	peer = ENetMultiplayerPeer.new(),
-	playerCount = 0,
-	maxPlayersAllowed = 2,
-}
+#region Multiplayer
+@onready var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
+var playerCount: int = 0
+const maxPlayersAllowed: int = 2
+#endregion
 
-# Chemins vers d'autres scènes
-const PATHES: Dictionary[StringName, PackedScene] = {
-	body = preload("res://Scenes/characters/playables/body.tscn"),
-	spirit = preload("res://Scenes/characters/playables/spirit.tscn")
-	}
+#region Pathes
+const body: Resource = preload("res://Scenes/characters/playables/body.tscn")
+const spirit: Resource = preload("res://Scenes/characters/playables/spirit.tscn")
+#endregion
 
-# Informations sur le déroulé de la partie
-@export var INFO: Dictionary[StringName, bool] = {
-	power = true,
-}
+#region Informations
+@export var power: bool = true
+#endregion
 
 """
 NOTE A MOI-MEME :
@@ -35,29 +31,29 @@ NOTE A MOI-MEME :
 """
 
 func _on_host_pressed() -> void:
-	MULTIPLAYER.peer.create_server(4242)
-	multiplayer.multiplayer_peer = MULTIPLAYER.peer
+	peer.create_server(4242)
+	multiplayer.multiplayer_peer = peer
 	
 	multiplayer.peer_connected.connect(
-		func(pid):
+		func(pid: int) -> void:
 			add_player(pid)
 			print("Pair " + str(pid) + " a rejoint la partie !")
 	)
 	# PID of the host
 	add_player(multiplayer.get_unique_id())
-	NODES.multiplayerUI.hide()
+	multiplayerUI.hide()
 
 func _on_join_pressed() -> void:
-	MULTIPLAYER.peer.create_client("localhost", 4242)
-	multiplayer.multiplayer_peer = MULTIPLAYER.peer
-	NODES.multiplayerUI.hide()
+	peer.create_client("localhost", 4242)
+	multiplayer.multiplayer_peer = peer
+	multiplayerUI.hide()
 
 # Si le joueur est l'hote, il est ajouté dans la scène en tant que Body, sinon Spirit. Retourne true tant que le nombre de joueurs connectés ne dépasse pas le nombre maximum de joueurs autorisés dans la partie
 func add_player(pid: int) -> bool:
 	await get_tree().process_frame
-	if MULTIPLAYER.playerCount < MULTIPLAYER.maxPlayersAllowed:
-		var player: CharacterBody2D = PATHES.body.instantiate() if pid == multiplayer.get_unique_id() else PATHES.spirit.instantiate()
+	if playerCount < maxPlayersAllowed:
+		var player: CharacterBody2D = body.instantiate() if pid == multiplayer.get_unique_id() else spirit.instantiate()
 		player.name = str(pid)
-		NODES.floor1.add_child(player)
+		floor1.add_child(player)
 		return true
 	return false

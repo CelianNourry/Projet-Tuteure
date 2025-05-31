@@ -2,52 +2,51 @@
 class_name Door
 extends StaticBody2D
 
-# Noeuds de la porte
-@onready var NODES: Dictionary[StringName, Node] = {
-	collisionShape = $CollisionShape2D,
-	sprite = $Sprite2D
-}
+#region Nodes
+@onready var collisionShape: CollisionShape2D = $CollisionShape2D
+@onready var sprite: Sprite2D = $Sprite2D
+#endregion
 
-# Informations de la porte
-@export var INFO: Dictionary[StringName, Variant] = {
-	locked = false,
-	opened = true,
-	seenByBody = false,
-}
+#region Informations
+@export var isLocked: bool
+@export var isOpened: bool
+@export var seenByBody: bool
+#endregion
 
-const SPRITES: Dictionary[StringName, Resource] = {
-	opened = preload("res://Sprites/interactables/iron bars door - OPENED.png"),
-	closed = preload("res://Sprites/interactables/iron bars door - CLOSED.png")
-}
+#region Sprites
+const opened: Resource = preload("res://Sprites/interactables/iron bars door - OPENED.png")
+const closed: Resource = preload("res://Sprites/interactables/iron bars door - CLOSED.png")
+#endregion
+
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
-		update_sprite()
-	if INFO.opened:
-		if !INFO.locked: # La porte est censée etre fermée de base, donc on retire sa collision si elle est ouverte depuis l'inspecteur
-			switch_collision()
-			update_sprite()
-		else:
-			push_error("%s cannot be opened and locked at the same time. Fix it in the editor" % [self])
+	add_to_group("doors")
+	if isOpened and isLocked:
+		push_error("%s cannot be opened and locked at the same time. Fix it in the editor" % [self.name])
+		return
 
+	# On active ou non la collision de la porte selon si elle est ouverte ou pas
+	collisionShape.disabled = isOpened
+	update_sprite()
+	
 # Pour voir si la porte est ouverte ou non dans l'editeur
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		update_sprite()
 		
 func update_sprite() -> void:
-	NODES.sprite.texture = SPRITES.opened if INFO.opened else SPRITES.closed
+	sprite.texture = opened if isOpened else closed
 	
 func switch_collision() -> void:
-	NODES.collisionShape.disabled = !NODES.collisionShape.disabled
+	collisionShape.disabled = !collisionShape.disabled
 
 @rpc("any_peer", "call_local")
 func interact_with_front_door() -> bool:
-	if INFO.locked:
+	if isLocked:
 		print("La porte est verrouilée !")
 		return false
 		
-	INFO.opened = !INFO.opened
+	isOpened = !isOpened
 	switch_collision()
 	update_sprite()
 	return true
@@ -58,9 +57,9 @@ func interact_with_back_door(action: String) -> bool:
 		"interact":
 			return interact_with_front_door()
 		"lock":
-			if !INFO.opened:
-				INFO.locked = !INFO.locked
-				print("Porte %s" % ("verrouillée" if INFO.locked else "déverrouillée"))
+			if !isOpened:
+				isLocked = !isLocked
+				print("Porte %s" % ("verrouillée" if isLocked else "déverrouillée"))
 				return true
 			return false
 		_:

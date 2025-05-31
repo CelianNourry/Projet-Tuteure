@@ -1,27 +1,29 @@
 class_name Item
 extends Node2D
 
-@onready var INFO: Dictionary[StringName, Variant] = {
-	name = "MISSING ITEM",
-	texture = "res://Sprites/missingTexture.png",
-	description = "MISSING DESCRIPTION",
-	scale = Vector2(1.0, 1.0),
-	scenePath = "res://Scenes/inventory/item.tscn"
-}
-
+#region Nodes
 @onready var sprite: Sprite2D = $Sprite2D
+#endregion
+
+#region Informations
+@onready var itemName: String = "MISSING ITEM"
+@onready var itemTexture: Texture2D = preload("res://Sprites/missingTexture.png")
+@onready var itemDescription: String = "MISSING DESCRIPTION"
+@onready var itemScale: Vector2 = Vector2(1.00, 1.00)
+@onready var itemScenePath: String = "res://Scenes/inventory/item.tscn"
+#endregion
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(int(str(name)))
 
 func initialize() -> void:
-	sprite.texture = INFO.texture
-	sprite.scale = INFO.scale
+	sprite.texture = itemTexture
+	sprite.scale = itemScale
 
 func _ready() -> void:
 	# Set texture to reflect in the game
 	if not Engine.is_editor_hint():
-		sprite.texture = INFO.texture
+		sprite.texture = itemTexture
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Body and body.is_multiplayer_authority():
@@ -33,13 +35,13 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 		
 @rpc("authority", "call_local")
 func pickup_item(body: Body) -> void:
-	var item = {
+	var item: Dictionary[String, Variant] = {
 		"quantity" : 1,
-		"name" : INFO.name,
-		"texture" : INFO.texture,
-		"texture_path" : INFO.texture.resource_path,
-		"description" : INFO.description,
-		"scenePath" : INFO.scenePath,
+		"name" : itemName,
+		"texture" : itemTexture,
+		"texture_path" : itemTexture.resource_path,
+		"description" : itemDescription,
+		"scenePath" : itemScenePath,
 	}
 	if body.is_multiplayer_authority():
 		if body.add_item(item):
@@ -52,11 +54,11 @@ func disappear() -> void:
 
 # Mettre les données de l'item sur l'item
 func set_item_data(data: Dictionary) -> void:
-	INFO.name = data["name"]
-	INFO.description = data["description"]
+	name = data["name"]
+	itemDescription = data["description"]
 	if data.has("texture_path"):
-		INFO.texture = load(data["texture_path"])
+		itemTexture = load(data["texture_path"])
 	elif data.has("texture") and typeof(data["texture"]) == TYPE_STRING:
-		INFO.texture = load(data["texture"])
+		itemTexture = load(data["texture"])
 	elif data.has("texture"):
-		INFO.texture = data["texture"]
+		itemTexture = data["texture"]
