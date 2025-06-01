@@ -11,8 +11,3 @@ res://Scenes/interactables/light.tscn
 res://Scenes/interactables/HVS.tscn
 res://Scenes/inventory/slot.tscn
 res://Scenes/particles/bloodtrail.tscn
-res://Scripts/interactables/door.gd
-res://Scripts/characters/unplayables/enemy.gd
-res://Scripts/characters/playables/body.gd
-res://Scripts/bars/bar.gd
-res://Scripts/global.gd
