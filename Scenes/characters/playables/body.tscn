@@ -273,7 +273,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vwk4u"]
 radius = 10.1812
-height = 29.1124
+height = 20.3625
 
 [sub_resource type="FontFile" id="FontFile_qycxt"]
 subpixel_positioning = 0

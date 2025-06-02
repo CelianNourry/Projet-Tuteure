@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://doo0t2c4p1lrx"]
+[gd_scene load_steps=7 format=3 uid="uid://doo0t2c4p1lrx"]
 
 [ext_resource type="Script" uid="uid://xjyutfl5rw6g" path="res://Scripts/characters/playables/spirit.gd" id="1_euhrx"]
-[ext_resource type="Texture2D" uid="uid://46f08vw0j2gv" path="res://Sprites/characters/ISO-Test-Player.png" id="2_fssqv"]
 [ext_resource type="PackedScene" uid="uid://c6vo780lvoxas" path="res://Scenes/bars/powerBar.tscn" id="3_fssqv"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ypt8m"]
@@ -15,42 +14,27 @@ height = 29.1124
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pl2su"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_fssqv")
-}],
+"frames": [],
 "loop": true,
 "name": &"idle",
 "speed": 5.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_fssqv")
-}],
+"frames": [],
 "loop": true,
 "name": &"walkdown",
 "speed": 5.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_fssqv")
-}],
+"frames": [],
 "loop": true,
 "name": &"walkleft",
 "speed": 5.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_fssqv")
-}],
+"frames": [],
 "loop": true,
 "name": &"walkright",
 "speed": 5.0
 }, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_fssqv")
-}],
+"frames": [],
 "loop": true,
 "name": &"walkup",
 "speed": 5.0
@@ -96,7 +80,7 @@ y_sort_enabled = true
 position = Vector2(0.5, 0)
 scale = Vector2(0.984375, 1)
 sprite_frames = SubResource("SpriteFrames_pl2su")
-animation = &"walkup"
+animation = &"idle"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4.5, 4.5)

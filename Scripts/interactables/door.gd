@@ -10,7 +10,8 @@ extends StaticBody2D
 #region Informations
 @export var isLocked: bool
 @export var isOpened: bool
-@export var seenByBody: bool
+@export var electric: bool
+var electricity: bool
 #endregion
 
 #region Sprites
@@ -27,6 +28,8 @@ func _ready() -> void:
 
 	# On active ou non la collision de la porte selon si elle est ouverte ou pas
 	collisionShape.disabled = isOpened
+	if electric:
+		electricity = Global.get_game_node().power
 	update_sprite()
 	
 # Pour voir si la porte est ouverte ou non dans l'editeur
@@ -34,6 +37,10 @@ func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		update_sprite()
 		
+func switch_electric_state() -> void:
+	if electric:
+		electricity = !electricity
+	
 func update_sprite() -> void:
 	sprite.texture = opened if isOpened else closed
 	
@@ -41,18 +48,21 @@ func switch_collision() -> void:
 	collisionShape.disabled = !collisionShape.disabled
 
 @rpc("any_peer", "call_local")
-func interact_with_front_door() -> bool:
+func interact_with_front_door() -> void:
+	if electric and electricity:
+		print("lol")
+		return
 	if isLocked:
 		print("La porte est verrouilée !")
-		return false
+		return
 		
 	isOpened = !isOpened
 	switch_collision()
 	update_sprite()
-	return true
 		
 @rpc("any_peer", "call_local")
-func interact_with_back_door(action: String) -> bool:
+func interact_with_back_door(action: String) -> void:
+	if electric and electricity: return
 	match action:
 		"interact":
 			return interact_with_front_door()
@@ -60,10 +70,8 @@ func interact_with_back_door(action: String) -> bool:
 			if !isOpened:
 				isLocked = !isLocked
 				print("Porte %s" % ("verrouillée" if isLocked else "déverrouillée"))
-				return true
-			return false
 		_:
-			return false
+			return
 
 func _on_front_body_entered(body: Node2D) -> void:
 	if not body.is_multiplayer_authority(): return

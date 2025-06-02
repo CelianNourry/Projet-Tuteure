@@ -19,7 +19,7 @@ var isMoving: bool = false
 @export var maxSpiritRange: float = 150.00 # Rayon maximum auquel le Spirit peut se déplacer autour du Body
 @export var power: float = 100.00 # pouvoir restant, sert à faire des actions
 
-@export var spawnCoordinates: Vector2 = Vector2(435.00, 170.00)
+@export var spawnCoordinates: Vector2 = Vector2(1820.00, 295.00)
 #endregion
 
 #region Interactables
@@ -109,7 +109,10 @@ func set_interactable_front_door(door: Door) -> void:
 	frontDoor = door
 	interactUI.visible = door != null
 	if door != null:
-		if door.isOpened:
+		if door.electric and door.electricity:
+			interactUILabel.text = Global.W_electric
+			return
+		elif door.isOpened:
 			interactUILabel.text = "E - Fermer"
 		else:
 			interactUILabel.text = "E - Ouvrir"
@@ -118,7 +121,10 @@ func set_interactable_back_door(door: Door) -> void:
 	backDoor = door
 	interactUI.visible = door != null
 	if door != null:
-		if door.isLocked:
+		if door.electric and door.electricity:
+			interactUILabel.text = Global.W_electric
+			return
+		elif door.isLocked:
 			interactUILabel.text = "L - Dérouiller"
 		else:
 			if door.isOpened:

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Jeu"
-run/main_scene="res://Scenes/game.tscn"
+run/main_scene="uid://250u0fm1wgof"
 config/features=PackedStringArray("4.4")
 run/max_fps=240
 
@@ -21,7 +21,6 @@ Global="*res://Scripts/global.gd"
 
 [debug]
 
-settings/stdout/print_fps=true
 gdscript/warnings/untyped_declaration=1
 
 [display]

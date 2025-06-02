@@ -38,6 +38,8 @@ func switch_power_state() -> void:
 	# Eteint toutes les lumières
 	for light: Light in get_tree().get_nodes_in_group("lights"):
 		light.switch_power_state()
+	for door: Door in get_tree().get_nodes_in_group("doors"):
+		if door.electric: door.switch_electric_state()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if (body is Body or body is Spirit) and body.is_multiplayer_authority():

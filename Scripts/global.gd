@@ -12,6 +12,7 @@ const E_turnOn: String = "E - Allumer"
 const E_turnOff: String = "E - Eteindre"
 const L_unlock: String = "L - Deverouiller"
 const L_lock: String = "L - Verouiller"
+const W_electric: String = "Désactiver le générateur avant !"
 #endregion
 
 #region Compass
@@ -72,18 +73,6 @@ func enforce_distance_from_host(inputVector: Vector2, spiritSpeed: float, positi
 	
 func cartesian_to_isometric(cartesian: Vector2) -> Vector2:
 	return Vector2(cartesian.x - cartesian.y, (cartesian.x + cartesian.y) /2)
-
-"""
-# Inutilisé pour le moment
-func rotate_vector(vec: Vector2, degrees: float) -> Vector2:
-	var radians = deg_to_rad(degrees)
-	var cos_angle = cos(radians)
-	var sin_angle = sin(radians)
-	return Vector2(
-		vec.x * cos_angle - vec.y * sin_angle,
-		vec.x * sin_angle + vec.y * cos_angle
-	)
-"""
 
 func generate_raycasts(node: Node, FOV: float, angleBetweenRays: float, maxViewDistance: float, enabled: bool) -> void:
 	var raysToGenerate: int = int(FOV / angleBetweenRays)

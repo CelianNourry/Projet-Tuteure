@@ -3,7 +3,8 @@ class_name Game
 
 #region Nodes
 @onready var multiplayerUI: Control = $UI/Multiplayer
-@onready var floor1: TileMapLayer = $"Floors/Floor 1"
+@onready var gameplay: Node2D = $Gameplay
+@onready var floor1: TileMapLayer = $"Gameplay/Floors/Floor 1"
 #endregion
 
 #region Multiplayer
@@ -30,6 +31,15 @@ NOTE A MOI-MEME :
 	sinon ils ne spawnent pas
 """
 
+func _ready() -> void :
+	gameplay_enabled(false)
+	
+func gameplay_enabled(enabled: bool) -> void:
+	gameplay.visible = enabled
+	set_process(enabled)
+	set_physics_process(enabled)
+	set_process_input(enabled)
+
 func _on_host_pressed() -> void:
 	peer.create_server(4242)
 	multiplayer.multiplayer_peer = peer
@@ -42,11 +52,13 @@ func _on_host_pressed() -> void:
 	# PID of the host
 	add_player(multiplayer.get_unique_id())
 	multiplayerUI.hide()
+	gameplay_enabled(true)
 
 func _on_join_pressed() -> void:
 	peer.create_client("localhost", 4242)
 	multiplayer.multiplayer_peer = peer
 	multiplayerUI.hide()
+	gameplay_enabled(true)
 
 # Si le joueur est l'hote, il est ajouté dans la scène en tant que Body, sinon Spirit. Retourne true tant que le nombre de joueurs connectés ne dépasse pas le nombre maximum de joueurs autorisés dans la partie
 func add_player(pid: int) -> bool:

@@ -50,7 +50,7 @@ var currentSpeed: float = 50.00
 	#endregion
 
 	#region Position
-@export var spawnCoordinates: Vector2 = Vector2(435.00, 170.00)
+@export var spawnCoordinates: Vector2 = Vector2(1820.00, 295.00)
 var previousPosition: Vector2
 	#endregion
 
@@ -172,16 +172,24 @@ func set_interactable_front_door(d: Door) -> void:
 	frontDoor = d
 	interactUI.visible = d != null
 	if d != null:
-		if d.isOpened:
+		if d.electric and d.electricity:
+			interactUILabel.text = Global.W_electric
+			return
+			
+		elif d.isOpened:
 			interactUILabel.text = Global.E_close
 		else:
 			interactUILabel.text = Global.E_open
+			
 	
 func set_interactable_back_door(d: Door) -> void:
 	backDoor = d
 	interactUI.visible = d != null
 	if d != null:
-		if d.isLocked:
+		if d.electric and d.electricity:
+			interactUILabel.text = Global.W_electric
+			return
+		elif d.isLocked:
 			interactUILabel.text = Global.L_unlock
 		else:
 			if d.isOpened:
